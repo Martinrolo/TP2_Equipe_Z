@@ -105,7 +105,7 @@ int t_pin_sortie_propager_signal(t_pin_sortie* pin)
 
 	/*Propagation échouée si on a pas de liaison ou bien si
 	la sortie est inactive*/
-	if (pin->valeur == -1 || pin->nb_liaisons == 0)
+	if (pin->valeur == INACTIF || pin->nb_liaisons == 0)
 		return FAUX;
 
 	//Sinon, ça veut dire qu'on a au moins une liaison
@@ -122,5 +122,5 @@ int t_pin_sortie_propager_signal(t_pin_sortie* pin)
 /************************************************************/
 void t_pin_sortie_reset(t_pin_sortie* pin)
 {
-
+	pin->valeur = INACTIF;
 }
