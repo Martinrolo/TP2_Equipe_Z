@@ -20,7 +20,10 @@ t_entree* t_entree_init(int id, char* nom)
 /********************************************************************/
 void t_entree_destroy(t_entree* entree)
 {
+	//D'abord détruire le pin de sortie de l'entrée
+	t_pin_sortie_destroy(entree->pin);
 
+	free(entree);
 }
 
 /********************************************************************/
