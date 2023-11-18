@@ -34,7 +34,7 @@ t_pin_sortie* t_pin_sortie_init(void)
 /************************************************************/
 void t_pin_sortie_destroy(t_pin_sortie* pin)
 {
-	free(pin->liaisons);
+	free(pin->liaisons[0]);
 	free(pin);
 }
 
@@ -57,11 +57,43 @@ void t_pin_sortie_set_valeur(t_pin_sortie* pin, int valeur)
 /************************************************************/
 int t_pin_sortie_ajouter_lien(t_pin_sortie* pin_sortie, const t_pin_entree* pin_entree)
 {
-	if (pin_sortie->nb_liaisons <= SORTIE_MAX_LIAISONS)
+	if (pin_sortie->nb_liaisons < SORTIE_MAX_LIAISONS)
 	{
-
+		//Ajouter le pointeur pin_entree au tableau liaisons
+		pin_sortie->liaisons[pin_sortie->nb_liaisons] = pin_entree;
+		pin_sortie->nb_liaisons++;
 		return VRAI;
 	}
 	
 	return FAUX;
 }
+
+/************************************************************/
+void t_pin_sortie_supprimer_lien(t_pin_sortie* pin_sortie, const t_pin_entree* pin_entree)
+{
+	int i, j;
+	
+	for (i = 0; i < SORTIE_MAX_LIAISONS; i++)
+	{
+		//Si le lien existe, on l'enlève et on décale tous les autres liens suivants
+		if (pin_sortie->liaisons[i] == pin_entree)
+		{
+			for (j = i; j < SORTIE_MAX_LIAISONS - 1; j++)
+			{
+				pin_sortie->liaisons[j] == pin_sortie->liaisons[j+1]
+			}
+			break; //plus besoin de continuer, on a trouvé le lien
+		}
+
+	}
+}
+
+
+/************************************************************/
+int t_pin_sortie_est_reliee(t_pin_sortie* pin);
+
+/************************************************************/
+int t_pin_sortie_propager_signal(t_pin_sortie* pin);
+
+/************************************************************/
+void t_pin_sortie_reset(t_pin_sortie* pin);
