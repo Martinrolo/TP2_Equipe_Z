@@ -41,32 +41,32 @@ int t_entree_est_reliee(t_entree* entree)
 /********************************************************************/
 void t_entree_reset(t_entree* entree)
 {
-
+	t_pin_sortie_reset(entree->pin);
 }
 
 /********************************************************************/
 int t_entree_propager_signal(t_entree* entree)
 {
-
+	t_pin_sortie_propager_signal(entree->pin);
 }
 
 /********************************************************************/
 int t_entree_get_valeur(const t_entree* entree)
 {
-
+	t_pin_sortie_get_valeur(entree->pin);
 }
 
 /********************************************************************/
 int t_entree_get_id(const t_entree* entree)
 {
-
+	return entree->id;
 }
 
 
 /********************************************************************/
 char* t_entree_get_nom(const t_entree* entree)
 {
-
+	return entree->nom;
 }
 
 /********************************************************************/
