@@ -73,5 +73,8 @@ char* t_entree_get_nom(const t_entree* entree)
 /********************************************************************/
 void t_entree_serialiser(const t_entree* entree, char* resultat)
 {
+	//Afficher id
+	printf("ID: %d", entree->id);
+
 
 }
