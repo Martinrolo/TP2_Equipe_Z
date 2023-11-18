@@ -12,7 +12,7 @@ t_entree* t_entree_init(int id, char* nom)
 	t_entree* entree = (t_entree*)malloc(sizeof(t_entree));
 
     entree->id = id;
-	entree->nom = *nom;
+	entree->nom = (char*)calloc(NOM_ENTREE_TAILLE_MAX, sizeof(char));
 
 	return entree;
 }
@@ -23,6 +23,7 @@ void t_entree_destroy(t_entree* entree)
 	//D'abord détruire le pin de sortie de l'entrée
 	t_pin_sortie_destroy(entree->pin);
 
+	free(entree->nom);
 	free(entree);
 }
 
