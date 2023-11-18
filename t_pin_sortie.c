@@ -51,6 +51,7 @@ void t_pin_sortie_set_valeur(t_pin_sortie* pin, int valeur)
 		//Valeur erronée
 		return;
 	}
+
 	pin->valeur = valeur;
 }
 
@@ -62,6 +63,7 @@ int t_pin_sortie_ajouter_lien(t_pin_sortie* pin_sortie, const t_pin_entree* pin_
 		//Ajouter le pointeur pin_entree au tableau liaisons
 		pin_sortie->liaisons[pin_sortie->nb_liaisons] = pin_entree;
 		pin_sortie->nb_liaisons++;
+
 		return VRAI;
 	}
 	
@@ -80,20 +82,45 @@ void t_pin_sortie_supprimer_lien(t_pin_sortie* pin_sortie, const t_pin_entree* p
 		{
 			for (j = i; j < SORTIE_MAX_LIAISONS - 1; j++)
 			{
-				pin_sortie->liaisons[j] == pin_sortie->liaisons[j+1]
+				pin_sortie->liaisons[j] == pin_sortie->liaisons[j + 1];
 			}
+
+			pin_sortie->nb_liaisons--;
 			break; //plus besoin de continuer, on a trouvé le lien
 		}
 
 	}
 }
 
+/************************************************************/
+int t_pin_sortie_est_reliee(t_pin_sortie* pin)
+{
+	return pin->nb_liaisons != NULL;
+}
 
 /************************************************************/
-int t_pin_sortie_est_reliee(t_pin_sortie* pin);
+int t_pin_sortie_propager_signal(t_pin_sortie* pin)
+{
+	int i;
+
+	/*Propagation échouée si on a pas de liaison ou bien si
+	la sortie est inactive*/
+	if (pin->valeur == -1 || pin->nb_liaisons == 0)
+		return FAUX;
+
+	//Sinon, ça veut dire qu'on a au moins une liaison
+	for (i = 0; i < pin->nb_liaisons; i++)
+	{
+		/*pour chaque pin d'entrée connecté à ce pin de sortie,
+		on transmet la valeur du pin de sortie au pin d'entrée*/
+		(pin->liaisons[i])->valeur = pin->valeur;
+	}
+
+	return VRAI;
+}
 
 /************************************************************/
-int t_pin_sortie_propager_signal(t_pin_sortie* pin);
+void t_pin_sortie_reset(t_pin_sortie* pin)
+{
 
-/************************************************************/
-void t_pin_sortie_reset(t_pin_sortie* pin);
+}
