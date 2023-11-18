@@ -21,6 +21,9 @@ Dernière modification: Eric Thé, 2023-11-12
 #ifndef T_PIN_SORTIE_H_
 #define T_PIN_SORTIE_H_
 
+#define FAUX 0
+#define VRAI 1
+
 #include "t_pin_entree.h"
 
 //Le nombre maximal de pins d'entrées auquels une sortie peut être connectée

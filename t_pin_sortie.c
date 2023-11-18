@@ -37,3 +37,31 @@ void t_pin_sortie_destroy(t_pin_sortie* pin)
 	free(pin->liaisons);
 	free(pin);
 }
+
+/************************************************************/
+int t_pin_sortie_get_valeur(t_pin_sortie* pin)
+{
+	return pin->valeur;
+}
+
+/************************************************************/
+void t_pin_sortie_set_valeur(t_pin_sortie* pin, int valeur)
+{
+	if (valeur < INACTIF || valeur > 1) {
+		//Valeur erronée
+		return;
+	}
+	pin->valeur = valeur;
+}
+
+/************************************************************/
+int t_pin_sortie_ajouter_lien(t_pin_sortie* pin_sortie, const t_pin_entree* pin_entree)
+{
+	if (pin_sortie->nb_liaisons <= SORTIE_MAX_LIAISONS)
+	{
+
+		return VRAI;
+	}
+	
+	return FAUX;
+}
