@@ -76,5 +76,5 @@ void t_entree_serialiser(const t_entree* entree, char* resultat)
 	//Afficher id
 	printf("ID: %d", entree->id);
 
-
+	//CONTINUER...
 }
