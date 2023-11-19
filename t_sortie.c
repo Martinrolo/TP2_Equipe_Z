@@ -9,7 +9,12 @@ Auteur: Martin Rolo Dussault & Antoine St-Amour
 
 t_sortie* t_sortie_init(int id, char* nom)
 {
+	t_sortie* sortie = (t_sortie*)malloc(sizeof(t_sortie));
 
+	entree->id = id;
+	entree->nom = (char*)calloc(NOM_ENTREE_TAILLE_MAX, sizeof(char));
+
+	return entree;
 }
 
 /***************************************************************************/
