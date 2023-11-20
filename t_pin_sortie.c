@@ -32,14 +32,12 @@ t_pin_sortie* t_pin_sortie_init(void)
 		nouv_pin->liaisons[i] = NULL;
 	}
 	
-
 	return nouv_pin;
 }
 
 /************************************************************/
 void t_pin_sortie_destroy(t_pin_sortie* pin)
 {
-	free(pin->liaisons[0]);
 	free(pin);
 }
 

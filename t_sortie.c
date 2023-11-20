@@ -22,9 +22,8 @@ t_sortie* t_sortie_init(int id, char* nom)
 void t_sortie_destroy(t_sortie* sortie)
 {
 	//D'abord détruire le pin d'entrée de la sortie
-	t_pin_sortie_destroy(sortie->pin);
+	t_pin_entree_destroy(sortie->pin);
 
-	free(sortie->nom);
 	free(sortie);
 }
 
@@ -38,8 +37,12 @@ t_pin_entree* t_sortie_get_pin(t_sortie* sortie)
 int t_sortie_relier(t_sortie* dest, char* nom_composant, const t_pin_sortie* source)
 {
 	t_pin_entree_relier(dest->pin, nom_composant, source);
-	return;
-	//PAS CORRECT
+
+	//S'il n'y a aucune source, on retourne faux
+	if (source == NULL)
+		return FAUX;
+
+	return VRAI;
 }
 
 /***************************************************************************/
@@ -75,8 +78,6 @@ char* t_sortie_get_nom(const t_sortie* sortie)
 /***************************************************************************/
 void t_sortie_serialiser(const t_sortie* sortie, char* resultat)
 {
-	//Afficher id
-	printf("ID: %d", sortie->id);
 
-	//CONTINUER...
 }
+

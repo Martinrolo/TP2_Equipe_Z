@@ -26,7 +26,6 @@ void t_entree_destroy(t_entree* entree)
 	//D'abord détruire le pin de sortie de l'entrée
 	t_pin_sortie_destroy(entree->pin);
 
-	free(entree->nom);
 	free(entree);
 }
 
@@ -76,8 +75,5 @@ char* t_entree_get_nom(const t_entree* entree)
 /********************************************************************/
 void t_entree_serialiser(const t_entree* entree, char* resultat)
 {
-	//Afficher id
-	printf("ID: %d", entree->id);
 
-	//CONTINUER...
 }
