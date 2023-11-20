@@ -14,7 +14,8 @@ t_entree* t_entree_init(int id, char* nom)
 	entree = (t_entree*)malloc(sizeof(t_entree));
 
     entree->id = id;
-	entree->nom = (char*)calloc(NOM_ENTREE_TAILLE_MAX, sizeof(char));
+	entree->nom = nom;
+	entree->pin = t_pin_sortie_init();
 
 	return entree;
 }
@@ -38,7 +39,7 @@ t_pin_sortie* t_entree_get_pin(t_entree* entree)
 /********************************************************************/
 int t_entree_est_reliee(t_entree* entree)
 {
-	return t_pin_sortie_est_reliee(&entree->pin);
+	return t_pin_sortie_est_reliee(entree->pin);
 }
 
 /********************************************************************/

@@ -12,7 +12,8 @@ t_sortie* t_sortie_init(int id, char* nom)
 	t_sortie* sortie = (t_sortie*)malloc(sizeof(t_sortie));
 
 	sortie->id = id;
-	sortie->nom = (char*)calloc(NOM_ENTREE_TAILLE_MAX, sizeof(char));
+	sortie->nom = nom;
+	sortie->pin = t_pin_entree_init();
 
 	return sortie;
 }
@@ -44,7 +45,7 @@ int t_sortie_relier(t_sortie* dest, char* nom_composant, const t_pin_sortie* sou
 /***************************************************************************/
 int t_sortie_est_reliee(t_sortie* sortie)
 {
-	return t_pin_entree_est_reliee(&sortie->pin);
+	return t_pin_entree_est_reliee(sortie->pin);
 }
 
 /***************************************************************************/

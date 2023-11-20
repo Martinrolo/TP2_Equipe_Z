@@ -19,14 +19,19 @@ Auteurs: Martin Rolo Dussault, Antoine St-Amour
 /************************************************************/
 t_pin_sortie* t_pin_sortie_init(void)
 {
-	t_pin_sortie* nouv_pin;
+	t_pin_sortie *nouv_pin;
 
 	nouv_pin = (t_pin_sortie*)malloc(sizeof(t_pin_sortie));
 
 	//Ce pin contient aucune valeur et pas de liaison.
 	nouv_pin->valeur = INACTIF;
 	nouv_pin->nb_liaisons = NULL;
-	nouv_pin->liaisons[0] = (t_pin_entree*)malloc(SORTIE_MAX_LIAISONS * sizeof(t_pin_entree));
+	
+	for (int i = 0; i < SORTIE_MAX_LIAISONS; i++)
+	{
+		nouv_pin->liaisons[i] = NULL;
+	}
+	
 
 	return nouv_pin;
 }
@@ -82,7 +87,7 @@ void t_pin_sortie_supprimer_lien(t_pin_sortie* pin_sortie, const t_pin_entree* p
 		{
 			for (j = i; j < SORTIE_MAX_LIAISONS - 1; j++)
 			{
-				pin_sortie->liaisons[j] == pin_sortie->liaisons[j + 1];
+				pin_sortie->liaisons[j] = pin_sortie->liaisons[j + 1];
 			}
 
 			pin_sortie->nb_liaisons--;
