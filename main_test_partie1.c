@@ -121,9 +121,12 @@ int main(void)
 	
 	//TEST T_PORTE_INIT
 	t_porte* porte;
-	porte = t_porte_init(0, PORTE_NOT, "P0");
+	porte = t_porte_init(0, PORTE_ET, "P0");
 	printf("Valeur de la porte: %d", porte->nb_entrees);
 	printf("\n");
+
+	//Calculer sortie
+	t_porte_calculer_sorties(porte);
 
 	//CONNECTER entrées, et 3 propagation de signaux
 

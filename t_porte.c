@@ -56,7 +56,34 @@ void t_porte_destroy(t_porte* porte)
 /********************************************************************/
 void t_porte_calculer_sorties(t_porte* porte)
 {
+	int val_entree0, val_entree1;
+	int resultat;
 
+	//Récupérer les valeurs aux entrées avec t_pin_entree_get_valeur()
+	val_entree0 = t_pin_entree_get_valeur(porte->entrees[0]);
+	val_entree1 = t_pin_entree_get_valeur(porte->entrees[1]);
+
+	//	Attribuer la valeur de sortie selon le calcul du type, avec t_pin_sortie_set_valeur()
+	switch (porte->type)
+	{
+	case PORTE_ET:
+		resultat = (val_entree0 & val_entree1);
+		break;
+
+	case PORTE_OU:
+		resultat = (val_entree0 | val_entree1);
+		break;
+
+	case PORTE_XOR:
+		resultat = (val_entree0 ^ val_entree1);
+		break;
+
+	case PORTE_NOT:
+		resultat = !val_entree0;
+		break;
+	}
+
+	t_pin_sortie_set_valeur(porte->sortie, resultat);
 }
 
 /********************************************************************/
