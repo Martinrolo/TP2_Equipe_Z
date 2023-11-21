@@ -116,5 +116,11 @@ int main(void)
 	t_entree_destroy(entree1);
 	t_sortie_destroy(sortie0);
 	t_sortie_destroy(sortie1);
+
+	
+	//TEST T_PORTE_INIT
+	t_porte_init(0, 0, "salut");
+
+
 	return 0;
 }

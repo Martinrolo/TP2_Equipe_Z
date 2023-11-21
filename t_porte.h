@@ -23,6 +23,7 @@ Dernière modification: Eric Thé, 2023-11-06
 typedef struct t_pin_entree t_pin_entree;
 typedef struct t_pin_sortie t_pin_sortie;
 
+#define MIN_ENTREES_PORTE  1    //Nombre min d'entrées pour une porte (NOT)
 #define MAX_ENTREES_PORTE  2    //Nombre maximales d'entrées pour une porte (AND, OR, XOR)
 #define NOM_PORTE_TAILLE_MAX 3  //Taille maximale du nom d'une porte
 								//en nombre de caractères
