@@ -110,14 +110,14 @@ int main(void)
 
 	printf("Sortie %d = %d\n", t_sortie_get_id(sortie0), t_sortie_get_valeur(sortie0));
 	printf("Sortie %d = %d\n", t_sortie_get_id(sortie1), t_sortie_get_valeur(sortie1));
-	system("pause");
+	//system("pause");
 
-	//libérer les 4 allocations
-	t_entree_destroy(entree0);
-	t_entree_destroy(entree1);
-	t_sortie_destroy(sortie0);
-	t_sortie_destroy(sortie1);
 
+
+
+
+	/******************************************************/
+	//TESTS ajoutés par nous
 	
 	//TEST T_PORTE_INIT
 	t_porte* porte;
@@ -129,7 +129,17 @@ int main(void)
 	t_porte_calculer_sorties(porte);
 
 	//CONNECTER entrées, et 3 propagation de signaux
+	int valeur = t_porte_relier(porte, 1, "P0", entree0->pin);
+	printf("\nLiaison reussie ou pas: %d", valeur);
 
+	/******************************************************/
+
+
+	//libérer les 4 allocations
+	t_entree_destroy(entree0);
+	t_entree_destroy(entree1);
+	t_sortie_destroy(sortie0);
+	t_sortie_destroy(sortie1);
 
 	return 0;
 }

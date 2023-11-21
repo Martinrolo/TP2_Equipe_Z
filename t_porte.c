@@ -61,7 +61,8 @@ void t_porte_calculer_sorties(t_porte* porte)
 
 	//Récupérer les valeurs aux entrées avec t_pin_entree_get_valeur()
 	val_entree0 = t_pin_entree_get_valeur(porte->entrees[0]);
-	val_entree1 = t_pin_entree_get_valeur(porte->entrees[1]);
+	if (porte->type != PORTE_NOT)
+		val_entree1 = t_pin_entree_get_valeur(porte->entrees[1]);
 
 	//	Attribuer la valeur de sortie selon le calcul du type, avec t_pin_sortie_set_valeur()
 	switch (porte->type)
@@ -90,8 +91,12 @@ void t_porte_calculer_sorties(t_porte* porte)
 int t_porte_relier(t_porte* dest, int num_entree, char* nom_sortie, t_pin_sortie* source)
 {
 	//Valider "num_entree" reçu selon le nb_entrees de la porte
-	//	Return 0 si non-valide
-	//Si OK: On relie la source dans l'entrée numéro num_entree avec t_pin_entree_relier
+	if (num_entree > (dest->nb_entrees) - 1)
+		return FAUX;
+
+	//Si OK: On relie la source à l'entrée de l'indice num_entree avec t_pin_entree_relier
+	t_pin_entree_relier(dest->entrees[num_entree], nom_sortie, source);
+	return VRAI;
 }
 
 /********************************************************************/
