@@ -8,6 +8,7 @@ Programme qui teste l'utilisation des librairies de circuits logique "t_entree"
 #include <assert.h>
 #include "t_entree.h"
 #include "t_sortie.h"
+#include "t_porte.h"
 
 int main(void)
 {
@@ -116,5 +117,16 @@ int main(void)
 	t_entree_destroy(entree1);
 	t_sortie_destroy(sortie0);
 	t_sortie_destroy(sortie1);
+
+	
+	//TEST T_PORTE_INIT
+	t_porte* porte;
+	porte = t_porte_init(0, PORTE_NOT, "P0");
+	printf("Valeur de la porte: %d", porte->nb_entrees);
+	printf("\n");
+
+	//CONNECTER entrées, et 3 propagation de signaux
+
+
 	return 0;
 }

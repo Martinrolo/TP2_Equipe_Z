@@ -1,26 +1,62 @@
 #include "t_porte.h"
 
+//FONCTION static définir nb_entrees
+static void creer_entrees(e_types_portes type, t_porte* porte)
+{
+	if (type == PORTE_NOT)
+	{
+		porte->nb_entrees = 1;
+		porte->entrees[0] = t_pin_entree_init();
+	}
+
+	else
+	{
+		porte->nb_entrees = MAX_ENTREES_PORTE;
+
+		for (int i = 0; i < MAX_ENTREES_PORTE; i++)
+			porte->entrees[i] = t_pin_entree_init();
+	}
+}
+
 t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 {
 	//Selon le type (SOUS-PROGRAMME STATIC):
 	//	-Établir le nb_entrees (1 ou 2)
 	//	-Créer le(s) entreée(s) avec t_pin_entree_init()
 	//Créer la sortie (t_pin_sortie_init)
+	t_porte* nouvelle_porte;
+
+	nouvelle_porte = (t_porte*)malloc(sizeof(t_porte));
+
+	//Assigner les valeurs des paramètres
+	nouvelle_porte->id = id;
+	nouvelle_porte->nom = nom;
+	nouvelle_porte->type = type;
+
+	//Crées la/les entrées
+	creer_entrees(type, nouvelle_porte);
+
+	//Créer la sortie de la porte
+	nouvelle_porte->sortie = t_pin_sortie_init();
+
+	return nouvelle_porte;
 }
 
 /********************************************************************/
 void t_porte_destroy(t_porte* porte)
 {
 	//Libérer le/les entrées et la sortie en 1er
+	t_pin_entree_destroy(porte->entrees);
+	t_pin_sortie_destroy(porte->sortie);
+
 	//Libérer la porte elle-même
+	free(porte);
 }
 
 /********************************************************************/
 void t_porte_calculer_sorties(t_porte* porte)
 {
-	//Selon le type:
-	//	Get les valeurs aux entrées avec t_pin_entree_get_valeur()
-	//	Attribuer la valeur de sortie selon le calcul du type, avec t_pin_sortie_set_valeur()
+
 }
 
 /********************************************************************/
