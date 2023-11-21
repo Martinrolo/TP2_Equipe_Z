@@ -3,21 +3,18 @@
 //FONCTION static définir nb_entrees
 static void creer_entrees(e_types_portes type, t_porte* porte)
 {
-	switch (type)
+	if (type == PORTE_NOT)
 	{
-	case PORTE_ET: case PORTE_OU: case PORTE_XOR:
+		porte->nb_entrees = 1;
+		porte->entrees[0] = t_pin_entree_init();
+	}
+
+	else
+	{
 		porte->nb_entrees = MAX_ENTREES_PORTE;
 
 		for (int i = 0; i < MAX_ENTREES_PORTE; i++)
 			porte->entrees[i] = t_pin_entree_init();
-
-		break;
-
-	case PORTE_NOT:
-		porte->nb_entrees = 1;
-
-		porte->entrees[0] = t_pin_entree_init();
-		break;
 	}
 }
 
@@ -59,9 +56,37 @@ void t_porte_destroy(t_porte* porte)
 /********************************************************************/
 void t_porte_calculer_sorties(t_porte* porte)
 {
-	//Selon le type:
-	//	Get les valeurs aux entrées avec t_pin_entree_get_valeur()
+	int val_entree0, val_entree1;
+
+	int resultat;
+
+	//Récupérer les valeurs aux entrées avec t_pin_entree_get_valeur()
+	val_entree0 = t_pin_entree_get_valeur(porte->entrees[0]);
+	if (porte->nb_entrees == MAX_ENTREES_PORTE)
+		val_entree1 = t_pin_entree_get_valeur(porte->entrees[1]);
+
 	//	Attribuer la valeur de sortie selon le calcul du type, avec t_pin_sortie_set_valeur()
+	switch (porte->type)
+	{
+		case PORTE_ET: 
+			resultat = (val_entree0 & val_entree1);
+			break;
+
+		case PORTE_OU:
+			resultat = (val_entree0 | val_entree1);
+			break;
+
+		case PORTE_XOR:
+			resultat = (val_entree0 ^ val_entree1);
+			break;
+
+		case PORTE_NOT:
+			resultat = !val_entree0;
+			break;
+	}
+
+	//t_pin_sortie_set_valeur()
+
 }
 
 /********************************************************************/
