@@ -61,9 +61,7 @@ void t_porte_calculer_sorties(t_porte* porte)
 
 	//Récupérer les valeurs aux entrées avec t_pin_entree_get_valeur()
 	val_entree0 = t_pin_entree_get_valeur(porte->entrees[0]);
-
-	if (porte->nb_entrees == MAX_ENTREES_PORTE)
-		val_entree1 = t_pin_entree_get_valeur(porte->entrees[1]);
+	val_entree1 = t_pin_entree_get_valeur(porte->entrees[1]);
 
 	//	Attribuer la valeur de sortie selon le calcul du type, avec t_pin_sortie_set_valeur()
 	switch (porte->type)
