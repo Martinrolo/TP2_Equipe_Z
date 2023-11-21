@@ -49,7 +49,11 @@ t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 void t_porte_destroy(t_porte* porte)
 {
 	//Libérer le/les entrées et la sortie en 1er
+	t_pin_entree_destroy(porte->entrees);
+	t_pin_sortie_destroy(porte->sortie);
+
 	//Libérer la porte elle-même
+	free(porte);
 }
 
 /********************************************************************/
