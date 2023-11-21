@@ -128,9 +128,18 @@ int main(void)
 	//Calculer sortie
 	t_porte_calculer_sorties(porte);
 
-	//CONNECTER entrées, et 3 propagation de signaux
-	int valeur = t_porte_relier(porte, 1, "P0", entree0->pin);
-	printf("\nLiaison reussie ou pas: %d", valeur);
+	//CONNECTER entrées et la sortie
+	int valeur1 = t_porte_relier(porte, 1, "P0", entree0->pin);
+	int valeur2 = t_porte_relier(porte, 1, "P0", entree0->pin);
+	int valeur3 = t_sortie_relier(sortie0, "S0", porte->sortie);
+
+	//TEST afficher si les liens sont bien faits et si la porte
+	//est reliée
+	int porte_reliee = t_porte_est_reliee(porte);
+	printf("\nLiaison reussie ou pas: %d", valeur1);
+	printf("\nLiaison reussie ou pas: %d", valeur2);
+	printf("\nLiaison reussie ou pas: %d", valeur3);
+	printf("\nPorte reliee ou pas: %d", porte_reliee);
 
 	/******************************************************/
 

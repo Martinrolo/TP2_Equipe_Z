@@ -103,7 +103,18 @@ int t_porte_relier(t_porte* dest, int num_entree, char* nom_sortie, t_pin_sortie
 int t_porte_est_reliee(t_porte* porte)
 {
 	//Vérifier le(s) entrée(s) avec t_pin_entree_est_reliee
+	for (int i = 1; i < porte->nb_entrees; i++)
+	{
+		if (t_pin_entree_est_reliee(porte->entrees[i]) == FAUX)
+			return FAUX;
+	}
+
 	//Vérifier la sortie avec t_pin_sortie_est_reliee
+	if (t_pin_sortie_est_reliee(porte->sortie) == FAUX)
+		return FAUX;
+
+	//Si tout va bien jusqu'ici, notre porte est bien reliée.
+	return VRAI;
 }
 
 /********************************************************************/
