@@ -50,13 +50,13 @@ void t_entree_reset(t_entree* entree)
 /********************************************************************/
 int t_entree_propager_signal(t_entree* entree)
 {
-	t_pin_sortie_propager_signal(entree->pin);
+	return t_pin_sortie_propager_signal(entree->pin);
 }
 
 /********************************************************************/
 int t_entree_get_valeur(const t_entree* entree)
 {
-	t_pin_sortie_get_valeur(entree->pin);
+	return t_pin_sortie_get_valeur(entree->pin);
 }
 
 /********************************************************************/
