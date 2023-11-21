@@ -83,8 +83,6 @@ void t_porte_calculer_sorties(t_porte* porte)
 		break;
 	}
 
-	printf("Résultat: %d", resultat);
-
 	t_pin_sortie_set_valeur(porte->sortie, resultat);
 }
 
