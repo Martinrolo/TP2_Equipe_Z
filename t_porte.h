@@ -121,7 +121,7 @@ Paramètres:
 - source: Le pin_sortie vers laquelle nous allons relier l'entrée de la porte. 
 Retour: Booléen : Vrai si la liaison a bien été effectuée. Faux sinon. 
 */
-int t_porte_relier(t_porte *dest, int num_entree, char* nom_sortie, const t_pin_sortie *source);
+int t_porte_relier(t_porte *dest, int num_entree, char* nom_sortie, t_pin_sortie *source);
 
 /*
 Fonction: T_PORTE_EST_RELIEE
