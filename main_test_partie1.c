@@ -125,6 +125,8 @@ int main(void)
 	printf("Valeur de la porte: %d", porte->nb_entrees);
 	printf("\n");
 
+	//CONNECTER entrées, et 3 propagation de signaux
+
 
 	return 0;
 }
