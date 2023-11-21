@@ -6,11 +6,16 @@ static void creer_entrees(e_types_portes type, t_porte* porte)
 	switch (type)
 	{
 	case PORTE_ET: case PORTE_OU: case PORTE_XOR:
+		porte->nb_entrees = MAX_ENTREES_PORTE;
+
 		for (int i = 0; i < MAX_ENTREES_PORTE; i++)
 			porte->entrees[i] = t_pin_entree_init();
+
 		break;
 
 	case PORTE_NOT:
+		porte->nb_entrees = 1;
+
 		porte->entrees[0] = t_pin_entree_init();
 		break;
 	}
@@ -36,6 +41,8 @@ t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 
 	//Créer la sortie de la porte
 	nouvelle_porte->sortie = t_pin_sortie_init();
+
+	return nouvelle_porte;
 }
 
 /********************************************************************/
