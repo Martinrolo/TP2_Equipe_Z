@@ -122,7 +122,7 @@ int main(void)
 	//TEST T_PORTE_INIT
 	t_porte* porte;
 	porte = t_porte_init(0, PORTE_OU, "P0");
-	printf("Valeur de la porte: %d", porte->nb_entrees);
+	printf("\nNombres d'entrees de la porte: %d", porte->nb_entrees);
 	printf("\n");
 
 	//Set valeurs des entrées

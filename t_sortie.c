@@ -2,7 +2,7 @@
 Module: T_SORTIE
 Description: Définit le type t_sortie (sortie de circuit) et fournit les
 			 fonctions pour le manipuler.
-Auteur: Martin Rolo Dussault & Antoine St-Amour
+Auteurs: Martin Rolo Dussault, Maxim Dmitriev & Antoine St-Amour
 */
 
 #include "t_sortie.h"

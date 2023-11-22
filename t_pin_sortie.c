@@ -11,7 +11,7 @@ Description: Définit le type t_pin_entree. Un t_pin_entree est un point de conne
 			 Un pin d'entree permet de relier le composant auquel il appartient à un autre composant.
 			 Il doit être relié à un "pin de sortie" du composant auquel on souhaite se connecter.
 
-Auteurs: Martin Rolo Dussault, Antoine St-Amour
+Auteurs: Martin Rolo Dussault, Maxim Dmitriev & Antoine St-Amour
 */
 
 #include "t_pin_sortie.h"

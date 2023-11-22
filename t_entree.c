@@ -2,7 +2,7 @@
 Module: T_ENTREE
 Description: Définit le type t_entree (Entrée de circuit) et fournit les
 			 fonctions pour le manipuler.
-Auteur: Martin Rolo Dussault & Antoine St-Amour
+Auteurs: Martin Rolo Dussault, Maxim Dmitriev & Antoine St-Amour
 */
 
 #include "t_entree.h"
