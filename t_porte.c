@@ -103,7 +103,7 @@ int t_porte_relier(t_porte* dest, int num_entree, char* nom_sortie, t_pin_sortie
 int t_porte_est_reliee(t_porte* porte)
 {
 	//Vérifier le(s) entrée(s) avec t_pin_entree_est_reliee
-	for (int i = 1; i < porte->nb_entrees; i++)
+	for (int i = 0; i < porte->nb_entrees; i++)
 	{
 		if (t_pin_entree_est_reliee(porte->entrees[i]) == FAUX)
 			return FAUX;
@@ -121,13 +121,19 @@ int t_porte_est_reliee(t_porte* porte)
 void t_porte_reset(t_porte* porte)
 {
 	//Mettre les entrées et sorties à INACTIF avec t_pin_entree_set_valeur et t_pin_sortie_set_valeur.
+	for (int i = 0; i < porte->nb_entrees; i++)
+	{
+		t_pin_entree_set_valeur(porte->entrees[i], INACTIF);
+	}
+
+	t_pin_sortie_set_valeur(porte->sortie, INACTIF);
 }
 
 /********************************************************************/
 int t_porte_propager_signal(t_porte* porte)
 {
 	//Si une des entrées est INACTIF, return 0
-	//Sinon, on calcule la sortie avec t_porte_calculer_sortie)
+	
 	//Ensuite, appeler t_pin_sortie_propager_signal() et return son résultat
 
 	//POUR TESTER LES PORTES: Faire un circuit avec 2 entrées, 1 sortie et 1 porte.
