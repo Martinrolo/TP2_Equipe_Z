@@ -56,7 +56,18 @@ typedef struct t_porte {
 	int nb_entrees;
 } t_porte;
 
+/*
+Fonction: creer_entrees
+Description: Crée de nouvelles entrées à une porte selon le type, et assigne une valeur
+				du nombre d'entrées créées
 
+Paramètres:
+- type: Le type de porte à créer, selon la liste des types prédéfinis dans e_types_portes
+- porte: La porte où on désire insérer des entrées
+Retour: Aucun
+Paramètres modifié: Entrées de la porte et nombre d'entrées de la porte
+*/
+static void creer_entrees(e_types_portes type, t_porte* porte);
 
 /*
 Fonction: T_PORTE_INIT

@@ -133,10 +133,15 @@ void t_porte_reset(t_porte* porte)
 int t_porte_propager_signal(t_porte* porte)
 {
 	//Si une des entrées est INACTIF, return 0
-	
-	//Ensuite, appeler t_pin_sortie_propager_signal() et return son résultat
+	for (int i = 0; i < porte->nb_entrees; i++)
+	{
+		if (t_pin_entree_get_valeur(porte->entrees[i]) == INACTIF)
+			return FAUX;
+	}
 
-	//POUR TESTER LES PORTES: Faire un circuit avec 2 entrées, 1 sortie et 1 porte.
+	//Sinon, on calcule la sortie et on propage le signal
+	t_porte_calculer_sorties(porte);
+	return t_pin_sortie_propager_signal(porte->sortie);
 }
 
 int t_porte_get_id(const t_porte* porte)
