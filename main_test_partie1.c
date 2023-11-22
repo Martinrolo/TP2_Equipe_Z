@@ -121,7 +121,7 @@ int main(void)
 	
 	//TEST T_PORTE_INIT
 	t_porte* porte;
-	porte = t_porte_init(0, PORTE_ET, "P0");
+	porte = t_porte_init(0, PORTE_OU, "P0");
 	printf("Valeur de la porte: %d", porte->nb_entrees);
 	printf("\n");
 
@@ -148,6 +148,14 @@ int main(void)
 	t_porte_propager_signal(porte);
 	printf("\nValeur recue de la sortie S0: %d", sortie0->pin->valeur);
 	printf("\n\n");
+
+	//Test d'accès au nom de la porte
+	char* nom = t_porte_get_nom(porte);
+	printf("Nom: %s", nom);
+
+	//Test accès au type
+	e_types_portes type = t_porte_get_type(porte);
+	printf("\nType: %d", type);
 
 	/******************************************************/
 
