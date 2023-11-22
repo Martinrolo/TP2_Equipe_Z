@@ -144,36 +144,43 @@ int t_porte_propager_signal(t_porte* porte)
 	return t_pin_sortie_propager_signal(porte->sortie);
 }
 
+/********************************************************************/
 int t_porte_get_id(const t_porte* porte)
 {
 
 }
 
+/********************************************************************/
 char* t_porte_get_nom(const t_porte* porte)
 {
 
 }
 
+/********************************************************************/
 int t_porte_get_nb_entrees(const t_porte* porte)
 {
 
 }
 
+/********************************************************************/
 e_types_portes t_porte_get_type(const t_porte* porte)
 {
 
 }
 
+/********************************************************************/
 t_pin_entree* t_porte_get_pin_entree(const t_porte* porte, int num)
 {
 
 }
 
+/********************************************************************/
 t_pin_sortie* t_porte_get_pin_sortie(const t_porte* porte)
 {
 
 }
 
+/********************************************************************/
 void t_porte_serialiser(const t_porte* porte, char* resultat)
 {
 

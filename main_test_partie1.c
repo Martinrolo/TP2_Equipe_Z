@@ -129,8 +129,8 @@ int main(void)
 	t_porte_calculer_sorties(porte);
 
 	//CONNECTER entrées et la sortie
-	int valeur1 = t_porte_relier(porte, 1, "P0", entree0->pin);
-	int valeur2 = t_porte_relier(porte, 1, "P0", entree0->pin);
+	int valeur1 = t_porte_relier(porte, 0, "P0", entree0->pin);
+	int valeur2 = t_porte_relier(porte, 1, "P1", entree1->pin);
 	int valeur3 = t_sortie_relier(sortie0, "S0", porte->sortie);
 
 	//TEST afficher si les liens sont bien faits et si la porte
