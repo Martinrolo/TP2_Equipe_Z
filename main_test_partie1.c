@@ -125,12 +125,13 @@ int main(void)
 	printf("Valeur de la porte: %d", porte->nb_entrees);
 	printf("\n");
 
-	//Calculer sortie
-	t_porte_calculer_sorties(porte);
+	//Set valeurs des entrées
+	t_pin_sortie_set_valeur(entree0->pin, 1);
+	t_pin_sortie_set_valeur(entree1->pin, 1);
 
 	//CONNECTER entrées et la sortie
-	int valeur1 = t_porte_relier(porte, 0, "P0", entree0->pin);
-	int valeur2 = t_porte_relier(porte, 1, "P1", entree1->pin);
+	int valeur1 = t_porte_relier(porte, 0, "E0", entree0->pin);
+	int valeur2 = t_porte_relier(porte, 1, "E1", entree1->pin);
 	int valeur3 = t_sortie_relier(sortie0, "S0", porte->sortie);
 
 	//TEST afficher si les liens sont bien faits et si la porte
@@ -140,6 +141,13 @@ int main(void)
 	printf("\nLiaison reussie ou pas: %d", valeur2);
 	printf("\nLiaison reussie ou pas: %d", valeur3);
 	printf("\nPorte reliee ou pas: %d", porte_reliee);
+
+	//tester de propager le signal
+	t_entree_propager_signal(entree0);
+	t_entree_propager_signal(entree1);
+	t_porte_propager_signal(porte);
+	printf("\nValeur recue de la sortie S0: %d", sortie0->pin->valeur);
+	printf("\n\n");
 
 	/******************************************************/
 
