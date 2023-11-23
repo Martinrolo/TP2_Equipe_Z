@@ -25,6 +25,7 @@ static void creer_entrees(e_types_portes type, t_porte* porte)
 	}
 }
 
+/********************************************************************/
 t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 {
 	//Selon le type (SOUS-PROGRAMME STATIC):
