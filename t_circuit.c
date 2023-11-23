@@ -164,10 +164,24 @@ void t_circuit_reset(t_circuit* circuit)
 /********************************************************************/
 int t_circuit_propager_signal(t_circuit* circuit)
 {
+	//Variables locales
+	t_porte* file[CIRCUIT_MAX_PORTES];
+	t_porte* porte_courante;
+	int nb_iterations = 0;
+
 	//Analyser les cas où le signal ne peut pas se propager
 	if (!t_circuit_est_valide(circuit))
 		return FAUX;
 	//if (!t_circuit_appliquer_signal(cir))
+
+
+	//Propager le signal de toutes les entrées
+	for (int i = 0; i < circuit->nb_entrees; i++)
+	{
+		t_entree_propager_signal(circuit->entrees[i]);
+	}
+
+	//Ajouter les portes à la file
 }
 
 /********************************************************************/
