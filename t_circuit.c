@@ -98,59 +98,110 @@ t_sortie* t_circuit_ajouter_sortie(t_circuit* circuit, int id, char* nom)
 /********************************************************************/
 int t_circuit_est_valide(t_circuit* circuit)
 {
+	//Vérifier les entrées
+	for (int i = 0; i < circuit->nb_entrees; i++)
+	{
+		if (!t_entree_est_reliee(circuit->entrees[i]))
+			return FAUX;
+	}
 
+	//Vérifier les sorties
+	for (int i = 0; i < circuit->nb_sorties; i++)
+	{
+		if (!t_sortie_est_reliee(circuit->sorties[i]))
+			return FAUX;
+	}
+
+	//Vérifier les entrées
+	for (int i = 0; i < circuit->nb_portes; i++)
+	{
+		if (!t_porte_est_reliee(circuit->portes[i]))
+			return FAUX;
+	}
+
+	//Sinon, tout va bien
+	return VRAI;
 }
 
 /********************************************************************/
 int t_circuit_appliquer_signal(t_circuit* circuit, int signal[], int nb_bits)
 {
+	//Si on a pas assez de bits pour chaque entrée, c'est pas bon
+	if (nb_bits != circuit->nb_entrees)
+		return FAUX;
 
+	for (int i = 0; i < circuit->nb_entrees; i++)
+	{
+		//Pour chaque entrée, on met la valeur du signal à son pin de sortie
+		t_pin_sortie_set_valeur(circuit->entrees[i]->pin, signal[i]);
+	}
+
+	return VRAI;
 }
 
 /********************************************************************/
 void t_circuit_reset(t_circuit* circuit)
 {
+	//Reset les entrees
+	for (int i = 0; i < circuit->nb_entrees; i++)
+	{
+		t_entree_reset(circuit->entrees[i]);
+	}
 
+	//Reset les sorties
+	for (int i = 0; i < circuit->nb_sorties; i++)
+	{
+		t_sortie_reset(circuit->sorties[i]);
+	}
+
+	//Reset les portes
+	for (int i = 0; i < circuit->nb_portes; i++)
+	{
+		t_porte_reset(circuit->portes[i]);
+	}
 }
 
 /********************************************************************/
 int t_circuit_propager_signal(t_circuit* circuit)
 {
-
+	//Analyser les cas où le signal ne peut pas se propager
+	if (!t_circuit_est_valide(circuit))
+		return FAUX;
+	//if (!t_circuit_appliquer_signal(cir))
 }
 
 /********************************************************************/
 int t_circuit_get_nb_portes(const t_circuit* circuit)
 {
-
+	return circuit->nb_portes;
 }
 
 /********************************************************************/
 t_porte* t_circuit_get_porte(const t_circuit* circuit, int pos)
 {
-
+	return circuit->portes[pos];
 }
 
 /********************************************************************/
 int t_circuit_get_nb_sorties(const t_circuit* circuit)
 {
-
+	return circuit->nb_sorties;
 }
 
 /********************************************************************/
 t_sortie* t_circuit_get_sortie(const t_circuit* circuit, int pos)
 {
-
+	return circuit->sorties[pos];
 }
 
 /********************************************************************/
 int t_circuit_get_nb_entrees(const t_circuit* circuit)
 {
-
+	return circuit->nb_entrees;
 }
 
 /********************************************************************/
 t_entree* t_circuit_get_entree(const t_circuit* circuit, int pos)
 {
-
+	return circuit->entrees[pos];
 }
