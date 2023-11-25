@@ -14,24 +14,24 @@ t_circuit* t_circuit_init(void)
 	nouveau_circuit = (t_circuit*)malloc(sizeof(t_circuit));
 
 	//Mettre tous les nombres d'éléments à 0
-	nouveau_circuit->nb_entrees = 0;
-	nouveau_circuit->nb_sorties = 0;
-	nouveau_circuit->nb_portes = 0;
+	nouveau_circuit->nb_entrees = NULL;
+	nouveau_circuit->nb_sorties = NULL;
+	nouveau_circuit->nb_portes = NULL;
 
 	//Mettre tous les éléments des tableaux à NULL
 	for (int i = 0; i < MAX_ENTREES; i++)
 	{
-		nouveau_circuit->nb_entrees = NULL;
+		nouveau_circuit->entrees[i] = NULL;
 	}
 
 	for (int i = 0; i < MAX_SORTIES; i++)
 	{
-		nouveau_circuit->nb_sorties = NULL;
+		nouveau_circuit->sorties[i] = NULL;
 	}
 
 	for (int i = 0; i < CIRCUIT_MAX_PORTES; i++)
 	{
-		nouveau_circuit->nb_portes = NULL;
+		nouveau_circuit->portes[i] = NULL;
 	}
 
 	return nouveau_circuit;
@@ -58,7 +58,6 @@ t_porte* t_circuit_ajouter_porte(t_circuit* circuit, e_types_portes le_type, int
 	circuit->nb_portes++;
 
 	return porte;
-
 }
 
 /********************************************************************/
