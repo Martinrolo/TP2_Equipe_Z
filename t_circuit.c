@@ -43,6 +43,16 @@ void t_circuit_destroy(t_circuit* circuit)
 	//pour chaque entree: t_entree_destroy
 	//Pourchaque sortie: t_sortie_destroy
 	//Pour chaque porte: t_porte_destroy
+	int i;
+
+	for (i = 0;i < circuit->nb_entrees;i++)
+		t_entree_destroy(circuit->entrees[i]);
+
+	for (i = 0;i < circuit->nb_sorties;i++)
+		t_sortie_destroy(circuit->sorties[i]);
+
+	for (i = 0;i < circuit->portes;i++)
+		t_porte_destroy(circuit->portes[i]);
 
 	free(circuit);
 }
