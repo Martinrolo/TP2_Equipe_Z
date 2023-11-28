@@ -187,14 +187,30 @@ int t_circuit_propager_signal(t_circuit* circuit)
 	//AJOUTER MODULE filelib cours 11, modifier pour des éléments typedef t_porte*
 	
 	//Init t_file file_portes
-	t_porte* file[CIRCUIT_MAX_PORTES];
+	t_file file[CIRCUIT_MAX_PORTES];
 	t_porte* porte_courante;
 	int nb_iterations = 0;
 
-	//Analyser les cas où le signal ne peut pas se propager
+	//Si le circuit n'est pas valide, on retourne faux+
 	if (!t_circuit_est_valide(circuit))
 		return FAUX;
-	//if (!t_circuit_appliquer_signal(cir))
+
+	//Si le signal n'a pas été appliqué à une entrée, on retourne faux
+	for (int i = 0; i < circuit->nb_entrees; i++)
+	{
+		if (circuit->entrees[i]->pin == INACTIF)
+			return FAUX;
+	}
+
+	//S'il y a une boucle dans le programme, on retourne faux
+	for (int i = 0; i < circuit->nb_portes; i++)
+	{
+		//pour chaque pin entrée de chaque porte
+		for (int j = 0; j < circuit->portes[i]->nb_entrees; j++)
+		{
+			if (circuit->portes[i]->sortie == INACTIF)
+				return FAUX;
+	}
 
 
 	//Propager le signal de toutes les entrées

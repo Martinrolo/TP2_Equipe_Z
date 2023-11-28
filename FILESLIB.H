@@ -4,14 +4,17 @@
 
 #include "t_porte.h"
 
+//typedef struct t_porte t_porte;
+
+
 #define  MAXFILE  20
 
 //changer cette declaration pour obtenir une file pour un autre type
 
-//typedef int  t_porte;
+typedef int t_element;
 
 typedef struct {
-  t_porte	file[MAXFILE]; 
+  t_porte*	file[MAXFILE]; 
   int		debut, fin; 
   int		total;          //le nombre total d'éléments dans la file
 } t_file;
@@ -27,9 +30,9 @@ int  pleine(const t_file *);
 int  vide(const t_file *);
 
 //fonction pour ajouter un element de plus a la fin d'une file
-void ajouterfin(t_file *, t_porte);
+void ajouterfin(t_file *, t_element);
 
 //fonction pour enlever un element du debut d'une file
-void enleverdebut(t_file *, t_porte*);
+void enleverdebut(t_file *, t_element*);
 
 #endif

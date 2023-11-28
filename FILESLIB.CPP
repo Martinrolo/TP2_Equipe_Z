@@ -1,6 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
-#include "fileslib.h"
 #include "FILESLIB.H"
 
 //fonction pour initialiser une file, la file sera vide 
@@ -19,7 +18,7 @@ int  vide(const t_file *f)
 { return (f->total == 0); }
 
 //fonction pour ajouter un element de plus a la fin d'une file
-void ajouterfin(t_file *f, t_porte el)
+void ajouterfin(t_file *f, t_element el)
 { if (pleine(f))
     printf("ERREUR!!! Debordement de file.\n");
   else {
@@ -30,7 +29,7 @@ void ajouterfin(t_file *f, t_porte el)
 }
 
 //focntion pour enlever un element du debut d'une file
-void enleverdebut(t_file *f, t_porte *el)
+void enleverdebut(t_file *f, t_element *el)
 { if (vide(f))
     printf("ERREUR!!! File vide.\n");
   else {
