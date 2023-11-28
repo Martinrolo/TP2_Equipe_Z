@@ -1,6 +1,6 @@
 //definitions pour la librairie de fonctions FILESLIB.CPP
-#ifndef ENTREE_H_
-#define ENTREE_H_
+#ifndef FILESLIB_H_
+#define FILESLIB_H_
 
 #include "t_porte.h"
 

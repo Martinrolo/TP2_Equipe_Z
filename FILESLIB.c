@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
-#include "FILESLIB.H"
+#include "FILESLIB.h"
 
 //fonction pour initialiser une file, la file sera vide 
 void initfile(t_file *f)

@@ -4,9 +4,11 @@ Description: Définit le type t_entree (Entrée de circuit) et fournit les
 			 fonctions pour le manipuler.
 Auteurs: Martin Rolo Dussault, Maxim Dmitriev & Antoine St-Amour
 */
-
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
 #include "t_circuit.h"
-#include "FILESLIB.H"
+#include "FILESLIB.h"
 
 t_circuit* t_circuit_init(void)
 {
@@ -52,7 +54,7 @@ void t_circuit_destroy(t_circuit* circuit)
 	for (i = 0;i < circuit->nb_sorties;i++)
 		t_sortie_destroy(circuit->sorties[i]);
 
-	for (i = 0;i < circuit->portes;i++)
+	for (i = 0;i < circuit->nb_portes;i++)
 		t_porte_destroy(circuit->portes[i]);
 
 	free(circuit);
@@ -184,21 +186,21 @@ void t_circuit_reset(t_circuit* circuit)
 /********************************************************************/
 int t_circuit_propager_signal(t_circuit* circuit)
 {
-	//AJOUTER MODULE filelib cours 11, modifier pour des éléments typedef t_porte*
-	
 	//Init t_file file_portes
-	t_element file[CIRCUIT_MAX_PORTES];
-	t_porte* porte_courante;
+	t_file file_portes;
+	initfile(&file_portes);
+	
+	t_porte* porte_courante = NULL; //Créer pointeur vers une porte
 	int nb_iterations = 0;
 
-	//Si le circuit n'est pas valide, on retourne faux+
+	//Si le circuit n'est pas valide, on retourne faux
 	if (!t_circuit_est_valide(circuit))
 		return FAUX;
 
 	//Si le signal n'a pas été appliqué à une entrée, on retourne faux
 	for (int i = 0; i < circuit->nb_entrees; i++)
 	{
-		if (circuit->entrees[i]->pin == INACTIF)
+		if (t_entree_get_pin(circuit->entrees[i]) == INACTIF)
 			return FAUX;
 	}
 
@@ -208,10 +210,11 @@ int t_circuit_propager_signal(t_circuit* circuit)
 		//pour chaque pin entrée de chaque porte
 		for (int j = 0; j < circuit->portes[i]->nb_entrees; j++)
 		{
-			if (circuit->portes[i]->sortie == INACTIF)
+			//Si un des pin d'entrées est relié à la sortie de la même porte, on retourne faux.
+			if (circuit->portes[i]->entrees[j]->liaison == circuit->portes[i]->sortie)
 				return FAUX;
+		}
 	}
-
 
 	//Propager le signal de toutes les entrées
 	for (int i = 0; i < circuit->nb_entrees; i++)
@@ -220,7 +223,27 @@ int t_circuit_propager_signal(t_circuit* circuit)
 	}
 
 	//Ajouter les portes à la file
-	//fct ajouter_fin dans module
+	for (int i = 0; i < circuit->nb_portes; i++)
+		ajouterfin(&file_portes, circuit->portes[i]);
+
+	//Défiler les portes
+	while (!vide(&file_portes) && nb_iterations < (circuit->nb_portes * (circuit->nb_portes + 1) / 2))
+	{
+		enleverdebut(&file_portes, &porte_courante);
+		int result_propager = t_porte_propager_signal(porte_courante);
+
+		//Si le signal ne se propage pas, on remet la porte dans la file
+		if (result_propager == FAUX)
+			ajouterfin(&file_portes, porte_courante);
+
+		nb_iterations++;
+	}
+
+	//Si la file est vide, le signal a réussi à se propager
+	if (vide(&file_portes))
+		return VRAI;
+	
+	return FAUX;
 }
 
 /********************************************************************/
