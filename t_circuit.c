@@ -40,6 +40,10 @@ t_circuit* t_circuit_init(void)
 /********************************************************************/
 void t_circuit_destroy(t_circuit* circuit)
 {
+	//pour chaque entree: t_entree_destroy
+	//Pourchaque sortie: t_sortie_destroy
+	//Pour chaque porte: t_porte_destroy
+
 	free(circuit);
 }
 
@@ -97,6 +101,10 @@ t_sortie* t_circuit_ajouter_sortie(t_circuit* circuit, int id, char* nom)
 /********************************************************************/
 int t_circuit_est_valide(t_circuit* circuit)
 {
+	//CHANGER: Faire un compteur de liaison manquantes, si au moins 
+	// 1 est pas reliée, on return false à la fin. Printf chaque composant
+	// non-relié
+	
 	//Vérifier les entrées
 	for (int i = 0; i < circuit->nb_entrees; i++)
 	{
@@ -163,7 +171,9 @@ void t_circuit_reset(t_circuit* circuit)
 /********************************************************************/
 int t_circuit_propager_signal(t_circuit* circuit)
 {
-	//Variables locales
+	//AJOUTER MODULE filelib cours 11, modifier pour des éléments typedef t_porte*
+	
+	//Init t_file file_portes
 	t_porte* file[CIRCUIT_MAX_PORTES];
 	t_porte* porte_courante;
 	int nb_iterations = 0;
@@ -181,6 +191,7 @@ int t_circuit_propager_signal(t_circuit* circuit)
 	}
 
 	//Ajouter les portes à la file
+	//fct ajouter_fin dans module
 }
 
 /********************************************************************/
@@ -192,7 +203,11 @@ int t_circuit_get_nb_portes(const t_circuit* circuit)
 /********************************************************************/
 t_porte* t_circuit_get_porte(const t_circuit* circuit, int pos)
 {
-	return circuit->portes[pos];
+	//Retourner la sortie si la position est valide
+	if (pos < CIRCUIT_MAX_PORTES && pos > -1)
+		return circuit->portes[pos];
+
+	return NULL;
 }
 
 /********************************************************************/
@@ -204,7 +219,11 @@ int t_circuit_get_nb_sorties(const t_circuit* circuit)
 /********************************************************************/
 t_sortie* t_circuit_get_sortie(const t_circuit* circuit, int pos)
 {
-	return circuit->sorties[pos];
+	//Retourner la sortie si la position est valide
+	if (pos < MAX_SORTIES && pos > -1)
+		return circuit->sorties[pos];
+
+	return NULL;
 }
 
 /********************************************************************/
@@ -216,5 +235,9 @@ int t_circuit_get_nb_entrees(const t_circuit* circuit)
 /********************************************************************/
 t_entree* t_circuit_get_entree(const t_circuit* circuit, int pos)
 {
-	return circuit->entrees[pos];
+	//Retourner l'entree si la position est valide
+	if (pos < MAX_ENTREES && pos > -1)
+		return circuit->entrees[pos];
+
+	return NULL;
 }

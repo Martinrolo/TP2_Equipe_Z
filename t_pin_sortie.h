@@ -21,6 +21,7 @@ Dernière modification: Eric Thé, 2023-11-12
 #ifndef T_PIN_SORTIE_H_
 #define T_PIN_SORTIE_H_
 
+//Créer constantes pour valeurs booléenes
 #define FAUX 0
 #define VRAI 1
 
