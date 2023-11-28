@@ -187,7 +187,7 @@ int t_circuit_propager_signal(t_circuit* circuit)
 	//AJOUTER MODULE filelib cours 11, modifier pour des éléments typedef t_porte*
 	
 	//Init t_file file_portes
-	t_file file[CIRCUIT_MAX_PORTES];
+	t_element file[CIRCUIT_MAX_PORTES];
 	t_porte* porte_courante;
 	int nb_iterations = 0;
 
