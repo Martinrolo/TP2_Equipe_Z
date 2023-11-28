@@ -11,7 +11,7 @@
 //typedef int  t_porte;
 
 typedef struct {
-  t_porte	portes[MAXFILE]; 
+  t_porte	file[MAXFILE]; 
   int		debut, fin; 
   int		total;          //le nombre total d'éléments dans la file
 } t_file;

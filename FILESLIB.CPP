@@ -24,7 +24,7 @@ void ajouterfin(t_file *f, t_porte el)
     printf("ERREUR!!! Debordement de file.\n");
   else {
     f->fin = (f->fin+1) % MAXFILE;
-    f->portes[f->fin] = el;
+    f->file[f->fin] = el;
     f->total++;
   }
 }
@@ -34,7 +34,7 @@ void enleverdebut(t_file *f, t_porte *el)
 { if (vide(f))
     printf("ERREUR!!! File vide.\n");
   else {
-    *el = f->portes[f->debut];
+    *el = f->file[f->debut];
     f->debut = (f->debut+1) % MAXFILE;
     f->total--;
   }

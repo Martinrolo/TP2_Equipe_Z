@@ -6,6 +6,7 @@ Auteurs: Martin Rolo Dussault, Maxim Dmitriev & Antoine St-Amour
 */
 
 #include "t_circuit.h"
+#include "FILESLIB.H"
 
 t_circuit* t_circuit_init(void)
 {
@@ -111,30 +112,32 @@ t_sortie* t_circuit_ajouter_sortie(t_circuit* circuit, int id, char* nom)
 /********************************************************************/
 int t_circuit_est_valide(t_circuit* circuit)
 {
-	//CHANGER: Faire un compteur de liaison manquantes, si au moins 
-	// 1 est pas reliée, on return false à la fin. Printf chaque composant
-	// non-relié
+	int compteur_pas_reliee = 0;
 	
 	//Vérifier les entrées
 	for (int i = 0; i < circuit->nb_entrees; i++)
 	{
 		if (!t_entree_est_reliee(circuit->entrees[i]))
-			return FAUX;
+			compteur_pas_reliee++;
 	}
 
 	//Vérifier les sorties
 	for (int i = 0; i < circuit->nb_sorties; i++)
 	{
 		if (!t_sortie_est_reliee(circuit->sorties[i]))
-			return FAUX;
+			compteur_pas_reliee++;
 	}
 
 	//Vérifier les entrées
 	for (int i = 0; i < circuit->nb_portes; i++)
 	{
 		if (!t_porte_est_reliee(circuit->portes[i]))
-			return FAUX;
+			compteur_pas_reliee++;
 	}
+
+	//Si au moins 1 composant n'est pas relié, on retourne FAUX
+	if (compteur_pas_reliee > 0)
+		return FAUX;
 
 	//Sinon, tout va bien
 	return VRAI;
