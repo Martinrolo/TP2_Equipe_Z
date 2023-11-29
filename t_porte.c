@@ -28,9 +28,6 @@ static void creer_entrees(e_types_portes type, t_porte* porte)
 /********************************************************************/
 t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 {
-	//Selon le type (SOUS-PROGRAMME STATIC):
-	//	-Établir le nb_entrees (1 ou 2)
-	//	-Créer le(s) entreée(s) avec t_pin_entree_init()
 	//Créer la sortie (t_pin_sortie_init)
 	t_porte* nouvelle_porte;
 
@@ -54,7 +51,8 @@ t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 void t_porte_destroy(t_porte* porte)
 {
 	//Libérer le/les entrées et la sortie en 1er
-	t_pin_entree_destroy(porte->entrees);
+	for (int i = 0; i < porte->nb_entrees; i++)
+		t_pin_entree_destroy(porte->entrees[i]);
 	t_pin_sortie_destroy(porte->sortie);
 
 	//Libérer la porte elle-même
