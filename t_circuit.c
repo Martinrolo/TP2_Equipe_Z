@@ -231,7 +231,7 @@ int t_circuit_propager_signal(t_circuit* circuit)
 	if (vide(&file_portes))
 		return VRAI;
 	
-	return FAUX;
+	return FAUX; //Sinon, ya une boucle quelque part
 }
 
 /********************************************************************/
