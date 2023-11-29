@@ -204,18 +204,6 @@ int t_circuit_propager_signal(t_circuit* circuit)
 			return FAUX;
 	}
 
-	//S'il y a une boucle dans le programme, on retourne faux
-	for (int i = 0; i < circuit->nb_portes; i++)
-	{
-		//pour chaque pin entrée de chaque porte
-		for (int j = 0; j < circuit->portes[i]->nb_entrees; j++)
-		{
-			//Si un des pin d'entrées est relié à la sortie de la même porte, on retourne faux.
-			if (circuit->portes[i]->entrees[j]->liaison == circuit->portes[i]->sortie)
-				return FAUX;
-		}
-	}
-
 	//Propager le signal de toutes les entrées
 	for (int i = 0; i < circuit->nb_entrees; i++)
 	{
