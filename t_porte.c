@@ -28,9 +28,6 @@ static void creer_entrees(e_types_portes type, t_porte* porte)
 /********************************************************************/
 t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 {
-	//Selon le type (SOUS-PROGRAMME STATIC):
-	//	-Établir le nb_entrees (1 ou 2)
-	//	-Créer le(s) entreée(s) avec t_pin_entree_init()
 	//Créer la sortie (t_pin_sortie_init)
 	t_porte* nouvelle_porte;
 
