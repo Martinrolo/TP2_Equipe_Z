@@ -75,5 +75,11 @@ char* t_entree_get_nom(const t_entree* entree)
 /********************************************************************/
 void t_entree_serialiser(const t_entree* entree, char* resultat)
 {
+	int position_texte = 0;
 
+	//Mettre ID de l'entrée en premier
+	position_texte += sprintf(resultat, "%d ", entree->id);
+
+	//Ajouter nom de l'entrée
+	position_texte += sprintf(resultat + position_texte, "%s\n", entree->nom);
 }

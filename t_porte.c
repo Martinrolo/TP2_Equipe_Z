@@ -4,7 +4,7 @@ Description: Définit le type t_entree (Entrée de circuit) et fournit les
 			 fonctions pour le manipuler.
 Auteurs: Martin Rolo Dussault, Maxim Dmitriev & Antoine St-Amour
 */
-
+#define _CRT_SECURE_NO_WARNINGS
 #include "t_porte.h"
 
 //FONCTION static définir nb_entrees
@@ -189,5 +189,14 @@ t_pin_sortie* t_porte_get_pin_sortie(const t_porte* porte)
 /********************************************************************/
 void t_porte_serialiser(const t_porte* porte, char* resultat)
 {
+	int position_texte = 0;
 
+	//Mettre ID de l'entrée en premier
+	position_texte += sprintf(resultat, "%d ", porte->id);
+
+	//Mettre le chiffre du type de l'entrée en premier
+	position_texte += sprintf(resultat + position_texte, "%d ", porte->type);
+
+	//Ajouter nom de l'entrée
+	position_texte += sprintf(resultat + position_texte, "%s\n", porte->nom);
 }

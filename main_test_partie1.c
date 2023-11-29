@@ -10,6 +10,7 @@ Programme qui teste l'utilisation des librairies de circuits logique "t_entree"
 #include "t_entree.h"
 #include "t_sortie.h"
 #include "t_circuit.h"
+#include "t_porte.h"
 
 void construire_circuit(t_circuit* circuit)
 {  //variables locales pour les composantes du circuit
@@ -65,6 +66,25 @@ int main(void)
 	entree1 = t_entree_init(1, "E1");
 	sortie0 = t_sortie_init(0, "S0");
 	sortie1 = t_sortie_init(1, "S1");
+
+
+	t_porte* porte_ou;	//les 4 portes
+	porte_ou = t_porte_init(4, PORTE_NOT, "P0");
+
+	char* resultat[20];
+	t_entree_serialiser(entree0, resultat);
+	printf("%s", resultat);
+
+	char* resultat2[20];
+	t_entree_serialiser(sortie0, resultat2);
+	printf("%s", resultat2);
+
+	char* resultat3[20];
+	t_porte_serialiser(porte_ou, resultat3);
+	printf("%s", resultat3);
+
+
+
 
 	//on teste si les entrées/sorties sont reliées
 	if (t_entree_est_reliee(entree0) == 0)
@@ -188,6 +208,10 @@ int main(void)
 		printf("Sortie 1: %d\n", t_sortie_get_valeur(sortie1));
 	}
 	else  printf("Erreur lors de la propagation du signal.\n");
+
+	//TEST circuit_io_sauvegarder
+	char* nom_fich = "test.txt";
+	circuit_IO_sauvegarder(nom_fich, circuit);
 
 	t_circuit_destroy(circuit);
 	//system("pause");
