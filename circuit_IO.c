@@ -15,11 +15,10 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 
 	//Afficher nombre de composants dans texte
 	char texte[100];
-	sprintf(texte, "%d", circuit->nb_entrees);
-	fprintf(fsortie, "%s\n", texte);
-	sprintf(texte, "%d", circuit->nb_sorties);
-	fprintf(fsortie, "%s\n", texte);
-	sprintf(texte, "%d", circuit->nb_portes);
+	int position_texte = 0;
+	position_texte += sprintf(texte, "%d ", circuit->nb_entrees);
+	position_texte += sprintf(texte + position_texte, "%d ", circuit->nb_sorties);
+	position_texte += sprintf(texte + position_texte, "%d", circuit->nb_portes);
 	fprintf(fsortie, "%s\n", texte);
 
 	//Écrire texte dans fichier
@@ -29,21 +28,21 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 	for (int i = 0; i < circuit->nb_entrees; i++)
 	{
 		t_entree_serialiser(circuit->entrees[i], &texte);
-		fprintf(fsortie, "%s\n", texte);
+		fprintf(fsortie, "%s", texte);
 	}
 
 	//Ajouter texte pour chaque sortie
 	for (int i = 0; i < circuit->nb_sorties; i++)
 	{
 		t_sortie_serialiser(circuit->sorties[i], &texte);
-		fprintf(fsortie, "%s\n", texte);
+		fprintf(fsortie, "%s", texte);
 	}
 
 	//Ajouter texte pour chaque porte
 	for (int i = 0; i < circuit->nb_portes; i++)
 	{
 		t_porte_serialiser(circuit->portes[i], &texte);
-		fprintf(fsortie, "%s\n", texte);
+		fprintf(fsortie, "%s", texte);
 	}
 
 	fclose(fsortie);
