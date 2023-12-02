@@ -32,6 +32,10 @@ void t_entree_destroy(t_entree* entree)
 /********************************************************************/
 t_pin_sortie* t_entree_get_pin(t_entree* entree)
 {
+	if (entree == NULL) {
+		// Handle the case where entree is NULL
+		return NULL;
+	}
 	return entree->pin;
 }
 
