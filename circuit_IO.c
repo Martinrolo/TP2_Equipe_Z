@@ -66,7 +66,8 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 			if (circuit->portes[i]->entrees[j]->nom_liaison == NULL)
 				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ", "XX");
 			else
-				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ", circuit->portes[i]->entrees[j]->nom_liaison);
+				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ", 
+					circuit->portes[i]->entrees[j]->nom_liaison);
 		}
 		
 		//Ajouter la porte et ses liaisons au fichier
@@ -85,7 +86,8 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 		position_sorties += sprintf(texte_sorties, "%s ", circuit->sorties[i]->nom);
 
 		//Écrire nom liaison de la sortie
-		position_sorties += sprintf(texte_sorties + position_sorties, "%s ", circuit->sorties[i]->pin->nom_liaison);
+		position_sorties += sprintf(texte_sorties + position_sorties, "%s ", 
+			circuit->sorties[i]->pin->nom_liaison);
 
 		//Ajouter la porte et ses liaisons au fichier
 		fprintf(fsortie, "%s\n", texte_sorties);
@@ -97,5 +99,43 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 /**********************************************************************************/
 void circuit_IO_charger(const char* chemin_acces, t_circuit* circuit)
 {
+	FILE* fentree = fopen(chemin_acces, "r");
 
+	//si le fichier est vide, on retourne faux
+	if (fentree == NULL)
+		return FAUX;
+
+	//Faire la lecture du nombre de composants
+	fscanf(fentree, "%d", &circuit->nb_entrees);
+	fscanf(fentree, "%d", &circuit->nb_sorties);
+	fscanf(fentree, "%d", &circuit->nb_portes);
+
+	//Variables ID et Nom pour chaque composant qu'on va lire
+	int id = 0;
+	e_types_portes type = 0;
+	char* nom[2];	//Chaque nom de composant est composé de 2 caractères
+
+	//Faire la lecture de l'id et du nom et les mettre pour chaque entrée
+	for (int i = 0; i < circuit->nb_entrees; i++)
+	{
+		//Lire l'ID et le nom afin d'initialiser l'entrée et l'ajouter au circuit
+		fscanf(fentree, "%d%s\n", &id, nom);
+		circuit->entrees[i] = t_entree_init(id, nom);
+	}
+
+	//Faire la lecture de l'id et du nom et les mettre pour chaque sortie
+	for (int i = 0; i < circuit->nb_sorties; i++)
+	{
+		//Lire l'ID et le nom afin d'initialiser la sortie et l'ajouter au circuit
+		fscanf(fentree, "%d%s\n", &id, nom);
+		circuit->sorties[i] = t_sortie_init(id, nom);
+	}
+
+	//Faire la lecture de l'id et du nom et les mettre pour chaque porte
+	for (int i = 0; i < circuit->nb_portes; i++)
+	{
+		//Lire l'ID et le nom afin d'initialiser la porte et l'ajouter au circuit
+		fscanf(fentree, "%d%d%s\n", &id, &type, nom);
+		circuit->portes[i] = t_porte_init(id, type, nom);
+	}
 }
