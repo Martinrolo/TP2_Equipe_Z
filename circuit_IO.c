@@ -7,7 +7,7 @@ Auteurs: Martin Rolo Dussault, Antoine St-Amour, Maxim Dmitriev
 #define _CRT_SECURE_NO_WARNINGS
 #include "circuit_IO.h"
 
-#define NB_CHAR_SERIALISER	10	//Nombre de caractères par ligne qu'on va sérialiser
+#define NB_CHAR_TAMPON		80	//Nombre de caractères tampon pour générer des strings
 #define NB_CHAR_COMPOSANT	2	//Nombre de caractères par nom de composant
 #define CONVERT_ASCII		48	//Nombre pour faire la conversion entre int et ASCII
 
@@ -15,48 +15,52 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 {
 	//Ouvrir le fichier
 	FILE* fsortie;
-	fsortie = fopen(nom_fichier, "a");
+	fsortie = fopen(nom_fichier, "w");
 
-	//Chercher les nombres de composants
-	char texte[NB_CHAR_SERIALISER];
-	int position_texte = 0;
+	//Espace tampon pour strings
+	char tampon[NB_CHAR_TAMPON];
 
-	position_texte += sprintf(texte, "%d ", circuit->nb_entrees);
-	position_texte += sprintf(texte + position_texte, "%d ", circuit->nb_sorties);
-	position_texte += sprintf(texte + position_texte, "%d", circuit->nb_portes);
+	if (fsortie == NULL)
+	{
+		printf("Erreur à l'ouverture du fichier!");
+		return FAUX;
+	}
 
-	//Mettre le texte des nombres de composants dans le fichier
-	fprintf(fsortie, "%s\n", texte);
+	//afficher chaque nombre de composant
+	fprintf(fsortie, "%d ", circuit->nb_entrees);
+	fprintf(fsortie, "%d ", circuit->nb_sorties);
+	fprintf(fsortie, "%d\n", circuit->nb_portes);
 
 	//Ajouter texte pour chaque entrée
 	for (int i = 0; i < circuit->nb_entrees; i++)
 	{
-		t_entree_serialiser(circuit->entrees[i], &texte);
-		fprintf(fsortie, "%s", texte);
+		t_entree_serialiser(circuit->entrees[i], tampon);
+		fprintf(fsortie, "%s", tampon);
 	}
 
 	//Ajouter texte pour chaque sortie
 	for (int i = 0; i < circuit->nb_sorties; i++)
 	{
-		t_sortie_serialiser(circuit->sorties[i], &texte);
-		fprintf(fsortie, "%s", texte);
+		t_sortie_serialiser(circuit->sorties[i], tampon);
+		fprintf(fsortie, "%s", tampon);
 	}
 
 	//Ajouter texte pour chaque porte
 	for (int i = 0; i < circuit->nb_portes; i++)
 	{
-		t_porte_serialiser(circuit->portes[i], &texte);
-		fprintf(fsortie, "%s", texte);
+		t_porte_serialiser(circuit->portes[i], tampon);
+		fprintf(fsortie, "%s", tampon);
 	}
 
+	
 	//
 	//Sérialiser les liaisons
 	//
 	//D'abord, on parcourt toutes les portes 
 	for (int i = 0; i < circuit->nb_portes; i++)
 	{
-		int position_liaisons = 0;
-		char texte_liaisons[NB_CHAR_SERIALISER];
+		int position_liaisons = 0;	//Position sur une ligne où on écrit
+		char texte_liaisons[NB_CHAR_TAMPON];
 
 		//Écrire nom porte
 		position_liaisons += sprintf(texte_liaisons, "%s ", circuit->portes[i]->nom);
@@ -64,12 +68,17 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 		//Écrire nom(s) de(s) liaison(s)
 		for (int j = 0; j < circuit->portes[i]->nb_entrees; j++)
 		{
-			//Si le nom est vide:
-			if (circuit->portes[i]->entrees[j]->nom_liaison == NULL)
+			//Si le nom de la liaison est vide:
+			if (strcmp(circuit->portes[i]->entrees[j]->nom_liaison, "") == 0)
 				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ", "XX");
+
+			//Sinon, on affiche le nom de la liaison
 			else
-				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ", 
+			{
+				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ",
 					circuit->portes[i]->entrees[j]->nom_liaison);
+				printf(circuit->portes[i]->entrees[j]->nom_liaison);
+			}		
 		}
 		
 		//Ajouter la porte et ses liaisons au fichier
@@ -81,8 +90,8 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 	//Écrire nom sorties
 	for (int i = 0; i < circuit->nb_sorties; i++)
 	{
-		int position_sorties = 0;
-		char texte_sorties[NB_CHAR_SERIALISER];
+		int position_sorties = 0;	//Position sur une ligne où on écrit
+		char texte_sorties[NB_CHAR_TAMPON];
 
 		//Écrire nom sortie
 		position_sorties += sprintf(texte_sorties, "%s ", circuit->sorties[i]->nom);
@@ -101,11 +110,15 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 /**********************************************************************************/
 void circuit_IO_charger(const char* chemin_acces, t_circuit* circuit)
 {
+	/*
 	FILE* fentree = fopen(chemin_acces, "r");
 
 	//si le fichier est vide, on retourne faux
 	if (fentree == NULL)
+	{
+		printf("Erreur à l'ouverture du fichier!");
 		return FAUX;
+	}
 
 	//Faire la lecture du nombre de composants
 	fscanf(fentree, "%d", &circuit->nb_entrees);
@@ -206,4 +219,5 @@ void circuit_IO_charger(const char* chemin_acces, t_circuit* circuit)
 	}
 
 	fclose(fentree);
+	*/
 }
