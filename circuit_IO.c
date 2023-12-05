@@ -58,7 +58,7 @@ static void ecrire_portes(FILE* fichier, int nb_portes, t_circuit* circuit)
 	//Ajouter texte pour chaque sortie
 	for (int i = 0; i < nb_portes; i++)
 	{
-		t_sortie_serialiser(circuit->portes[i], tampon);
+		t_porte_serialiser(circuit->portes[i], tampon);
 		fprintf(fichier, "%s", tampon);
 	}
 }
@@ -68,49 +68,42 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 	//D'abord, on parcourt toutes les portes 
 	for (int i = 0; i < circuit->nb_portes; i++)
 	{
-		int position_liaisons = 0;	//Position sur une ligne où on écrit
-		char texte_liaisons[NB_CHAR_TAMPON];
+		t_porte* porte = t_circuit_get_porte(circuit, i);
 
 		//Écrire nom porte
-		position_liaisons += sprintf(texte_liaisons, "%s ", circuit->portes[i]->nom);
+		fprintf(fichier, "%s ", t_porte_get_nom(porte));
 
 		//Écrire nom(s) de(s) liaison(s)
-		for (int j = 0; j < circuit->portes[i]->nb_entrees; j++)
+		for (int j = 0; j < t_porte_get_nb_entrees(porte); j++)
 		{
 			//Si le nom de la liaison est vide:
-			if (strcmp(circuit->portes[i]->entrees[j]->nom_liaison, "") == 0)
-				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ", "XX");
+			if (strcmp(porte->entrees[j]->nom_liaison, "") == 0)
+				fprintf(fichier, "%s ", "XX");
 
 			//Sinon, on affiche le nom de la liaison
 			else
 			{
-				position_liaisons += sprintf(texte_liaisons + position_liaisons, "%s ",
-					circuit->portes[i]->entrees[j]->nom_liaison);
-				printf(circuit->portes[i]->entrees[j]->nom_liaison);
+				fprintf(fichier, "%s ", porte->entrees[j]->nom_liaison);
+				printf(porte->entrees[j]->nom_liaison);
 			}
 		}
-
-		//Ajouter la porte et ses liaisons au fichier
-		fprintf(fichier, "%s\n", texte_liaisons);
+		//Saut de ligne
+		fprintf(fichier, "%c", '\n');
 	}
 
-	//Pour finir, on va sérialiser les sorties
-	//
 	//Écrire nom sorties
 	for (int i = 0; i < circuit->nb_sorties; i++)
 	{
-		int position_sorties = 0;	//Position sur une ligne où on écrit
-		char texte_sorties[NB_CHAR_TAMPON];
+		t_sortie* sortie = t_circuit_get_sortie(circuit, i);
 
 		//Écrire nom sortie
-		position_sorties += sprintf(texte_sorties, "%s ", circuit->sorties[i]->nom);
+		fprintf(fichier, "%s ", t_sortie_get_nom(sortie));
 
 		//Écrire nom liaison de la sortie
-		position_sorties += sprintf(texte_sorties + position_sorties, "%s ",
-			circuit->sorties[i]->pin->nom_liaison);
+		fprintf(fichier, "%s ", sortie->pin->nom_liaison);
 
-		//Ajouter la porte et ses liaisons au fichier
-		fprintf(fichier, "%s\n", texte_sorties);
+		//Saut de ligne
+		fprintf(fichier, "%c", '\n');
 	}
 }
 
@@ -148,6 +141,19 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 
 	fclose(fsortie);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**********************************************************************************/
 /*                      FONCTIONS PRIVÉES CIRCUIT_IO_CHARGER					  */	
