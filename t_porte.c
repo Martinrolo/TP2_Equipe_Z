@@ -35,7 +35,7 @@ t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 
 	//Assigner les valeurs des paramètres
 	nouvelle_porte->id = id;
-	nouvelle_porte->nom = nom;
+	nouvelle_porte->nom = _strdup(nom);
 	nouvelle_porte->type = type;
 
 	//Crées la/les entrées

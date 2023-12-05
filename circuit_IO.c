@@ -222,21 +222,19 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 
 		//Tableaux de caractères contenant les noms de composants
 		char nom_composant[NB_CHAR_COMPOSANT];	//Nom du composant
-		char* dup_nom_composant = _strdup(nom_composant);
 
 		char nom_liaison[NB_CHAR_COMPOSANT];	//Nom de la liaison
-		char* dup_nom_liaison = _strdup(nom_liaison);
 
 		//Lire nom de l'objet-destination
-		fscanf(fichier, "%s", dup_nom_composant);
-		printf("%c", dup_nom_composant[0]);
-		printf("%c", dup_nom_composant[1]);
+		fscanf(fichier, "%s", nom_composant);
+		printf("%c", nom_composant[0]);
+		printf("%c", nom_composant[1]);
 
 		//Si l'objet est une porte
-		if (dup_nom_composant[0] == 'P')
+		if (nom_composant[0] == 'P')
 		{
 			//Le 2e caractère équivaut à la position de la porte
-			porte_position = (int)dup_nom_composant[1] - CONVERT_ASCII;
+			porte_position = (int)nom_composant[1] - CONVERT_ASCII;
 
 			//On va chercher la porte et son nombre d'entrées
 			porte = circuit->portes[porte_position];
@@ -246,52 +244,52 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 			for (int j = 0; j < porte_nb_entrees; j++)
 			{
 				//Lire le composant source de la liaison
-				fscanf(fichier, "%s", dup_nom_liaison);
+				fscanf(fichier, "%s", nom_liaison);
 
 				//Si c'est une entrée, on va la chercher et prendre son pin de sortie
-				if (dup_nom_liaison[0] == 'E')
+				if (nom_liaison[0] == 'E')
 				{
 					//on cherche la position de l'entrée afin de la trouver
-					liaison_position = dup_nom_liaison[1] - CONVERT_ASCII;
+					liaison_position = nom_liaison[1] - CONVERT_ASCII;
 					entree = circuit->entrees[liaison_position];
 
 					//Chercher le pin de sortie de l'entrée source selon la position
 					t_pin_sortie* source = t_entree_get_pin(entree);
 
 					//Faire la liaison
-					t_porte_relier(porte, j, dup_nom_liaison, source);
+					t_porte_relier(porte, j, nom_liaison, source);
 				}
 
 				//Sinon, on va chercher la porte source et son pin de sortie
 				else
 				{
 					//Chercher la position de la porte et la trouver dans le circuit
-					liaison_position = dup_nom_liaison[1] - CONVERT_ASCII;
+					liaison_position = nom_liaison[1] - CONVERT_ASCII;
 					porte_source = circuit->portes[liaison_position];
 
 					//Chercher le pin de sortie de l'entrée source selon la position
 					t_pin_sortie* source = t_porte_get_pin_sortie(porte);
 
 					//Faire la liaison
-					t_porte_relier(porte, j, dup_nom_liaison, source);
+					t_porte_relier(porte, j, nom_liaison, source);
 				}
 			}
 		}
 
 		//Sinon, l'objet-destinaion est une sortie
-		else if (dup_nom_composant[0] == 'S')
+		else if (nom_composant[0] == 'S')
 		{
-			sortie_position = (int)dup_nom_composant[1] - CONVERT_ASCII;
+			sortie_position = (int)nom_composant[1] - CONVERT_ASCII;
 			sortie = circuit->sorties[sortie_position];
 
 			//Chercher le composant source de la liaison
-			fscanf(fichier, "%s", dup_nom_liaison);
-			liaison_position = (int)dup_nom_liaison[1] - CONVERT_ASCII;
+			fscanf(fichier, "%s", nom_liaison);
+			liaison_position = (int)nom_liaison[1] - CONVERT_ASCII;
 			porte_source = circuit->portes[liaison_position];
 
 
 			//relier la sortie à la porte
-			t_sortie_relier(sortie, dup_nom_liaison, porte_source);
+			t_sortie_relier(sortie, nom_liaison, porte_source);
 		}
 	}
 }
