@@ -32,8 +32,10 @@ static void ecrire_entrees(FILE* fichier, int nb_entrees, t_circuit* circuit)
 	//Ajouter texte pour chaque entrée
 	for (int i = 0; i < nb_entrees; i++)
 	{
+		memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
+
 		//CHANGER: mettre accesseurs
-		t_entree_serialiser(circuit->entrees[i], tampon);
+		t_entree_serialiser(t_circuit_get_entree(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
 	}
 }
@@ -46,7 +48,9 @@ static void ecrire_sorties(FILE* fichier, int nb_sorties, t_circuit* circuit)
 	//Ajouter texte pour chaque sortie
 	for (int i = 0; i < nb_sorties; i++)
 	{
-		t_sortie_serialiser(circuit->sorties[i], tampon);
+		memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
+
+		t_sortie_serialiser(t_circuit_get_sortie(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
 	}
 }
@@ -59,15 +63,19 @@ static void ecrire_portes(FILE* fichier, int nb_portes, t_circuit* circuit)
 	//Ajouter texte pour chaque sortie
 	for (int i = 0; i < nb_portes; i++)
 	{
-		t_porte_serialiser(circuit->portes[i], tampon);
+		memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
+
+		t_porte_serialiser(t_circuit_get_porte(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
 	}
+
+	memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
 }
 
 static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 {
 	//D'abord, on parcourt toutes les portes 
-	for (int i = 0; i < circuit->nb_portes; i++)
+	for (int i = 0; i < t_circuit_get_nb_portes(circuit); i++)
 	{
 		t_porte* porte = t_circuit_get_porte(circuit, i);
 
@@ -77,15 +85,17 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 		//Écrire nom(s) de(s) liaison(s)
 		for (int j = 0; j < t_porte_get_nb_entrees(porte); j++)
 		{
+			t_pin_entree* entree_porte = t_porte_get_pin_entree(porte, j);
+
 			//Si le nom de la liaison est vide:
-			if (strcmp(porte->entrees[j]->nom_liaison, "") == 0)
+			if (strcmp(t_pin_entree_get_lien(entree_porte), "") == 0)
 				fprintf(fichier, "%s ", "XX");
 
 			//Sinon, on affiche le nom de la liaison
 			else
 			{
-				fprintf(fichier, "%s ", porte->entrees[j]->nom_liaison);
-				printf(porte->entrees[j]->nom_liaison);
+				fprintf(fichier, "%s ", t_pin_entree_get_lien(entree_porte));
+				printf(t_pin_entree_get_lien(entree_porte));
 			}
 		}
 		//Saut de ligne
@@ -93,7 +103,7 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 	}
 
 	//Écrire nom sorties
-	for (int i = 0; i < circuit->nb_sorties; i++)
+	for (int i = 0; i < t_circuit_get_nb_sorties(circuit); i++)
 	{
 		t_sortie* sortie = t_circuit_get_sortie(circuit, i);
 
@@ -101,7 +111,7 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 		fprintf(fichier, "%s ", t_sortie_get_nom(sortie));
 
 		//Écrire nom liaison de la sortie
-		fprintf(fichier, "%s ", sortie->pin->nom_liaison);
+		fprintf(fichier, "%s ", t_pin_entree_get_lien(t_sortie_get_pin(sortie)));
 
 		//Saut de ligne
 		fprintf(fichier, "%c", '\n');
