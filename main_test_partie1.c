@@ -223,6 +223,7 @@ int main(void)
 	circuit_IO_sauvegarder(nom_fich2, circuit2);
 
 	t_circuit_destroy(circuit);
+	t_circuit_destroy(circuit2);
 	//system("pause");
 
 	return EXIT_SUCCESS;
