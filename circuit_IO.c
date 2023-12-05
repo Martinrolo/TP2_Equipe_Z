@@ -8,7 +8,7 @@ Auteurs: Martin Rolo Dussault, Antoine St-Amour, Maxim Dmitriev
 #include "circuit_IO.h"
 
 #define NB_CHAR_TAMPON		30	//Nombre de caractères par ligne qu'on va sérialiser
-#define NB_CHAR_COMPOSANT	2	//Nombre de caractères par nom de composant
+#define NB_CHAR_COMPOSANT	100	//Nombre de caractères par nom de composant
 #define CONVERT_ASCII		48	//Nombre pour faire la conversion entre int et ASCII
 
 static void ecrire_entrees(FILE*, int, t_circuit*);
