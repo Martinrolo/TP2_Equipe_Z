@@ -115,9 +115,6 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 	FILE* fsortie;
 	fsortie = fopen(nom_fichier, "w");
 
-	//Espace tampon pour strings
-	char tampon[NB_CHAR_TAMPON];
-
 	//get les nombre de composants
 	int nb_entrees = t_circuit_get_nb_entrees(circuit);
 	int nb_sorties = t_circuit_get_nb_sorties(circuit);
@@ -154,13 +151,23 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 
 
 
-
 /**********************************************************************************/
 /*                      FONCTIONS PRIVÉES CIRCUIT_IO_CHARGER					  */	
 /**********************************************************************************/
 static void lire_entrees(FILE* fichier, int nb_entrees, t_circuit* circuit)
 {
-	//t_circuit_ajouter_entree();
+	//Espace tampon pour le nom et variable pour l'ID
+	char nom[NB_CHAR_TAMPON];
+	int id = 0;
+
+	//Faire la lecture de l'id et du nom et les mettre pour chaque entrée
+	for (int i = 0; i < nb_entrees; i++)
+	{
+
+		//Lire l'ID et le nom afin d'initialiser l'entrée et l'ajouter au circuit
+		fscanf(fichier, "%d%s\n", &id, nom);
+		t_circuit_ajouter_entree(circuit, id, nom);
+	}
 }
 
 /**********************************************************************************/
@@ -208,20 +215,6 @@ void circuit_IO_charger(const char* chemin_acces, t_circuit* circuit)
 	//Lire les liens
 	lire_liens(fentree, circuit);
 
-
-
-
-	//Faire la lecture de l'id et du nom et les mettre pour chaque entrée
-	for (int i = 0; i < circuit->nb_entrees; i++)
-	{
-		int id = NULL;
-		char nom_composant[NB_CHAR_COMPOSANT];
-		char* nom = _strdup(nom_composant);		//Allouer mémoire pour chaque nom
-
-		//Lire l'ID et le nom afin d'initialiser l'entrée et l'ajouter au circuit
-		fscanf(fentree, "%d%s\n", &id, nom);
-		circuit->entrees[i] = t_entree_init(id, nom);
-	}
 
 	//Faire la lecture de l'id et du nom et les mettre pour chaque sortie
 	for (int i = 0; i < circuit->nb_sorties; i++)
