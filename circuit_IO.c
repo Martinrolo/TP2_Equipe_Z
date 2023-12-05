@@ -26,17 +26,41 @@ static void lire_liens(FILE*, t_circuit*);
 /**********************************************************************************/
 static void ecrire_entrees(FILE* fichier, int nb_entrees, t_circuit* circuit)
 {
+	//Espace tampon pour texte
+	char tampon[NB_CHAR_TAMPON];
 
+	//Ajouter texte pour chaque entrée
+	for (int i = 0; i < nb_entrees; i++)
+	{
+		t_entree_serialiser(circuit->entrees[i], tampon);
+		fprintf(fichier, "%s", tampon);
+	}
 }
 
 static void ecrire_sorties(FILE* fichier, int nb_sorties, t_circuit* circuit)
 {
+	//Espace tampon pour texte
+	char tampon[NB_CHAR_TAMPON];
 
+	//Ajouter texte pour chaque sortie
+	for (int i = 0; i < nb_sorties; i++)
+	{
+		t_sortie_serialiser(circuit->sorties[i], tampon);
+		fprintf(fichier, "%s", tampon);
+	}
 }
 
 static void ecrire_portes(FILE* fichier, int nb_portes, t_circuit* circuit)
 {
+	//Espace tampon pour texte
+	char tampon[NB_CHAR_TAMPON];
 
+	//Ajouter texte pour chaque sortie
+	for (int i = 0; i < nb_portes; i++)
+	{
+		t_sortie_serialiser(circuit->portes[i], tampon);
+		fprintf(fichier, "%s", tampon);
+	}
 }
 
 static void ecrire_liens(FILE* fichier, t_circuit* circuit)
@@ -68,29 +92,13 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 	ecrire_entrees(fsortie, nb_entrees, circuit);
 
 	//Écrire les sorties
-	ecrire_sorties(fsortie, nb_entrees, circuit);
+	ecrire_sorties(fsortie, nb_sorties, circuit);
 
 	//Écrire les portes
-	ecrire_portes(fsortie, nb_entrees, circuit);
+	ecrire_portes(fsortie, nb_portes, circuit);
 
 	//Écrire les liens
 	ecrire_liens(fsortie, circuit);
-
-
-
-	//Ajouter texte pour chaque sortie
-	for (int i = 0; i < circuit->nb_sorties; i++)
-	{
-		t_sortie_serialiser(circuit->sorties[i], tampon);
-		fprintf(fsortie, "%s", tampon);
-	}
-
-	//Ajouter texte pour chaque porte
-	for (int i = 0; i < circuit->nb_portes; i++)
-	{
-		t_porte_serialiser(circuit->portes[i], tampon);
-		fprintf(fsortie, "%s", tampon);
-	}
 
 	//Sérialiser les liaisons
 	//D'abord, on parcourt toutes les portes 
