@@ -221,9 +221,11 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 		t_porte* porte_source;	//Dans le cas où la porte-destination est liée à une porte
 
 		//Tableaux de caractères contenant les noms de composants
-		char nom_composant[NB_CHAR_COMPOSANT];	//Nom du composant
+		char nom1[NB_CHAR_COMPOSANT];	//Nom du composant
+		char* nom_composant = _strdup(nom1);
 
-		char nom_liaison[NB_CHAR_COMPOSANT];	//Nom de la liaison
+		char nom2[NB_CHAR_COMPOSANT];	//Nom de la liaison
+		char* nom_liaison = _strdup(nom2);
 
 		//Lire nom de l'objet-destination
 		fscanf(fichier, "%s", nom_composant);
