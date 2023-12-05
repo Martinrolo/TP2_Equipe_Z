@@ -220,7 +220,7 @@ int main(void)
 
 	//TEST sauvegarder nouveau circuit dans nouveau fichier
 	char* nom_fich2 = "test2.txt";
-	circuit_IO_sauvegarder(nom_fich2, circuit);
+	circuit_IO_sauvegarder(nom_fich2, circuit2);
 
 	t_circuit_destroy(circuit);
 	//system("pause");
