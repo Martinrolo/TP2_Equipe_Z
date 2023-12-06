@@ -56,6 +56,7 @@ void t_porte_destroy(t_porte* porte)
 	t_pin_sortie_destroy(porte->sortie);
 
 	//Libérer la porte elle-même
+	free(porte->nom);
 	free(porte);
 }
 

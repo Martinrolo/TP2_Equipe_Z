@@ -7,8 +7,8 @@ Auteurs: Martin Rolo Dussault, Antoine St-Amour, Maxim Dmitriev
 #define _CRT_SECURE_NO_WARNINGS
 #include "circuit_IO.h"
 
-#define NB_CHAR_TAMPON		30	//Nombre de caractères par ligne qu'on va sérialiser
-#define NB_CHAR_COMPOSANT	100	//Nombre de caractères par nom de composant
+#define NB_CHAR_TAMPON		15	//Nombre de caractères par ligne qu'on va sérialiser
+#define NB_CHAR_COMPOSANT	2	//Nombre de caractères par nom de composant
 #define CONVERT_ASCII		48	//Nombre pour faire la conversion entre int et ASCII
 
 static void ecrire_entrees(FILE*, int, t_circuit*);
@@ -32,8 +32,6 @@ static void ecrire_entrees(FILE* fichier, int nb_entrees, t_circuit* circuit)
 	//Ajouter texte pour chaque entrée
 	for (int i = 0; i < nb_entrees; i++)
 	{
-		memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
-
 		//CHANGER: mettre accesseurs
 		t_entree_serialiser(t_circuit_get_entree(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
@@ -48,8 +46,6 @@ static void ecrire_sorties(FILE* fichier, int nb_sorties, t_circuit* circuit)
 	//Ajouter texte pour chaque sortie
 	for (int i = 0; i < nb_sorties; i++)
 	{
-		memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
-
 		t_sortie_serialiser(t_circuit_get_sortie(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
 	}
@@ -63,13 +59,9 @@ static void ecrire_portes(FILE* fichier, int nb_portes, t_circuit* circuit)
 	//Ajouter texte pour chaque sortie
 	for (int i = 0; i < nb_portes; i++)
 	{
-		memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
-
 		t_porte_serialiser(t_circuit_get_porte(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
 	}
-
-	memset(tampon, 0, sizeof(tampon));	//Nettoyer le tableau
 }
 
 static void ecrire_liens(FILE* fichier, t_circuit* circuit)
@@ -231,11 +223,9 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 		t_porte* porte_source;	//Dans le cas où la porte-destination est liée à une porte
 
 		//Tableaux de caractères contenant les noms de composants
-		char nom1[NB_CHAR_COMPOSANT];	//Nom du composant
-		char* nom_composant = _strdup(nom1);
-
-		char nom2[NB_CHAR_COMPOSANT];	//Nom de la liaison
-		char* nom_liaison = _strdup(nom2);
+		char nom[NB_CHAR_COMPOSANT];
+		char* nom_composant = _strdup(nom);
+		char* nom_liaison = _strdup(nom);
 
 		//Lire nom de l'objet-destination
 		fscanf(fichier, "%s", nom_composant);
@@ -249,8 +239,8 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 			porte_position = (int)nom_composant[1] - CONVERT_ASCII;
 
 			//On va chercher la porte et son nombre d'entrées
-			porte = circuit->portes[porte_position];
-			porte_nb_entrees = porte->nb_entrees;
+			porte = t_circuit_get_porte(circuit, porte_position);
+			porte_nb_entrees = t_porte_get_nb_entrees(porte);
 
 			//Lire prochain nom(s) de liaison(s) dans le fichier, selon le nombre de pin d'entrées
 			for (int j = 0; j < porte_nb_entrees; j++)
@@ -263,7 +253,7 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 				{
 					//on cherche la position de l'entrée afin de la trouver
 					liaison_position = nom_liaison[1] - CONVERT_ASCII;
-					entree = circuit->entrees[liaison_position];
+					entree = t_circuit_get_entree(circuit, liaison_position);
 
 					//Chercher le pin de sortie de l'entrée source selon la position
 					t_pin_sortie* source = t_entree_get_pin(entree);
@@ -277,7 +267,7 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 				{
 					//Chercher la position de la porte et la trouver dans le circuit
 					liaison_position = nom_liaison[1] - CONVERT_ASCII;
-					porte_source = circuit->portes[liaison_position];
+					porte_source = t_circuit_get_porte(circuit, liaison_position);
 
 					//Chercher le pin de sortie de l'entrée source selon la position
 					t_pin_sortie* source = t_porte_get_pin_sortie(porte);
@@ -292,16 +282,15 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 		else if (nom_composant[0] == 'S')
 		{
 			sortie_position = (int)nom_composant[1] - CONVERT_ASCII;
-			sortie = circuit->sorties[sortie_position];
+			sortie = t_circuit_get_sortie(circuit, sortie_position);
 
 			//Chercher le composant source de la liaison
 			fscanf(fichier, "%s", nom_liaison);
 			liaison_position = (int)nom_liaison[1] - CONVERT_ASCII;
-			porte_source = circuit->portes[liaison_position];
-
+			porte_source = t_circuit_get_porte(circuit, liaison_position);
 
 			//relier la sortie à la porte
-			t_sortie_relier(sortie, nom_liaison, porte_source);
+			t_sortie_relier(sortie, nom_liaison, t_porte_get_pin_sortie(porte_source));
 		}
 	}
 }
