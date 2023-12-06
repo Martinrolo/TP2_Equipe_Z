@@ -215,7 +215,7 @@ int main(void)
 	circuit_IO_sauvegarder(nom_fich, circuit);
 
 
-	/*
+	
 	//TEST créer circuit
 	t_circuit* circuit2 = t_circuit_init();
 	circuit_IO_charger(nom_fich, circuit2);

@@ -315,5 +315,4 @@ void circuit_IO_charger(const char* chemin_acces, t_circuit* circuit)
 	lire_liens(fentree, circuit);
 
 	fclose(fentree);
-	*/
 }
