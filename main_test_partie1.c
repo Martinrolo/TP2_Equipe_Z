@@ -1,6 +1,6 @@
 /*
 TESTER LES ENTREES ET LES SORTIES
-Auteur: Eric Thé, 13-11-2023
+Auteur: Eric ThÃ©, 13-11-2023
 
 Programme qui teste l'utilisation des librairies de circuits logique "t_entree"
 (avec "t_pin_sortie") et "t_sortie".  Plusieurs tests unitaires sont faits avec "assert()"
@@ -19,13 +19,13 @@ void construire_circuit(t_circuit* circuit)
 	t_porte* porte_et;
 	t_porte* porte_not;
 	t_porte* porte_xor;
-	t_entree* entree0;	//les 3 entrées
+	t_entree* entree0;	//les 3 entrÃ©es
 	t_entree* entree1;
 	t_entree* entree2;
 	t_sortie* sortie0;	//les 2 sorties
 	t_sortie* sortie1;
 
-	//Ajout des entrées
+	//Ajout des entrÃ©es
 	entree0 = t_circuit_ajouter_entree(circuit, 0, "E0");
 	entree1 = t_circuit_ajouter_entree(circuit, 1, "E1");
 	entree2 = t_circuit_ajouter_entree(circuit, 2, "E2");
@@ -54,15 +54,15 @@ void construire_circuit(t_circuit* circuit)
 
 int main(void)
 {
-	//déclaration de variables
-	t_entree* entree0;     //les 2 entrées
+	//dÃ©claration de variables
+	t_entree* entree0;     //les 2 entrÃ©es
 	t_entree* entree1;
 	t_sortie* sortie0;     //les 2 sorties
 	t_sortie* sortie1;
 	t_pin_sortie* pin;     //pointeur vers un des pins de sortie (de E0 ou E1)
-	t_pin_entree* pin_in;  //pointeur vers un des pins d'entrée (de S0 ou S1)
+	t_pin_entree* pin_in;  //pointeur vers un des pins d'entrÃ©e (de S0 ou S1)
 
-	//Créer tous les éléments dynamiques
+	//CrÃ©er tous les Ã©lÃ©ments dynamiques
 	entree0 = t_entree_init(0, "E0");
 	entree1 = t_entree_init(1, "E1");
 	sortie0 = t_sortie_init(0, "S0");
@@ -87,7 +87,7 @@ int main(void)
 
 
 
-	//on teste si les entrées/sorties sont reliées
+	//on teste si les entrÃ©es/sorties sont reliÃ©es
 	if (t_entree_est_reliee(entree0) == 0)
 		printf("L'entree %s n'est pas reliee!\n", t_entree_get_nom(entree0));
 
@@ -100,10 +100,10 @@ int main(void)
 	if (t_sortie_est_reliee(sortie1) == 0)
 		printf("La sortie %s n'est pas reliee!\n", t_sortie_get_nom(sortie1));
 
-	//on récupère une référence sur le pin de sortie de entree0
+	//on rÃ©cupÃ¨re une rÃ©fÃ©rence sur le pin de sortie de entree0
 	pin = t_entree_get_pin(entree0);
 
-	//on connecte entree0 à la sortie0
+	//on connecte entree0 Ã  la sortie0
 	t_sortie_relier(sortie0, t_entree_get_nom(entree0), pin);
 	assert(t_entree_est_reliee(entree0) == 1);		//test unitaire rapide avec assert()
 	assert(t_sortie_est_reliee(sortie0) == 1);		//test unitaire rapide avec assert()
@@ -112,7 +112,7 @@ int main(void)
 	printf("\nLa sortie %s est connectee a l'entree %s\n", t_sortie_get_nom(sortie0),
 		t_pin_entree_get_lien(pin_in));
 
-	//on connecte entree0 à la sortie1
+	//on connecte entree0 Ã  la sortie1
 	t_sortie_relier(sortie1, t_entree_get_nom(entree0), pin);
 	assert(t_sortie_est_reliee(sortie1) == 1);		//test unitaire rapide avec assert()
 
@@ -120,11 +120,11 @@ int main(void)
 	printf("\nLa sortie %s est connectee a l'entree %s\n", t_sortie_get_nom(sortie1),
 		t_pin_entree_get_lien(pin_in));
 
-	//mettre le signal à 1 dans le pin de entree0 et propager le signal
+	//mettre le signal Ã  1 dans le pin de entree0 et propager le signal
 	t_pin_sortie_set_valeur(pin, 1);
 	t_entree_propager_signal(entree0);
 
-	//TEST 1: on confirme la réception du signal (1) dans les deux sorties
+	//TEST 1: on confirme la rÃ©ception du signal (1) dans les deux sorties
 	printf("\nTEST 1: %s (%d) -> %s et %s\n", t_entree_get_nom(entree0), t_entree_get_valeur(entree0),
 		t_sortie_get_nom(sortie0), t_sortie_get_nom(sortie1));
 
@@ -138,10 +138,10 @@ int main(void)
 	t_sortie_reset(sortie0);
 	assert(t_sortie_get_valeur(sortie0) == INACTIF);   //test unitaire rapide avec assert()
 
-	//on récupère une référence sur le pin de sortie de entree1
+	//on rÃ©cupÃ¨re une rÃ©fÃ©rence sur le pin de sortie de entree1
 	pin = t_entree_get_pin(entree1);
 
-	//on connecte entree1 à la sortie1
+	//on connecte entree1 Ã  la sortie1
 	t_sortie_relier(sortie1, t_entree_get_nom(entree1), pin);
 	assert(t_entree_est_reliee(entree1) == 1);		//test unitaire rapide avec assert()
 	assert(t_sortie_est_reliee(sortie1) == 1);		//test unitaire rapide avec assert()
@@ -150,20 +150,20 @@ int main(void)
 	printf("\nLa sortie %s est connectee a l'entree %s\n", t_sortie_get_nom(sortie1),
 		t_pin_entree_get_lien(pin_in));
 
-	//mettre le signal à 1 dans le pin de entree1 et propager le signal
+	//mettre le signal Ã  1 dans le pin de entree1 et propager le signal
 	t_pin_sortie_set_valeur(pin, 1);
 	t_entree_propager_signal(entree1);
 
-	//mettre le signal à -1 dans le pin de sortie de entree0
+	//mettre le signal Ã  -1 dans le pin de sortie de entree0
 	t_entree_reset(entree0);
 	assert(t_entree_get_valeur(entree0) == INACTIF);    //test unitaire rapide avec assert()
 
-	//mettre le signal à 0 dans le pin de entree0 et propager le signal
+	//mettre le signal Ã  0 dans le pin de entree0 et propager le signal
 	pin = t_entree_get_pin(entree0);
 	t_pin_sortie_set_valeur(pin, 0);
 	t_entree_propager_signal(entree0);
 
-	//TEST 2: on confirme la réception du signal (1) dans S0 et (0) dans S1
+	//TEST 2: on confirme la rÃ©ception du signal (1) dans S0 et (0) dans S1
 	printf("\nTEST 2: %s (%d) -> %s, %s (%d) -> %s\n", t_entree_get_nom(entree0), t_entree_get_valeur(entree0),
 		t_sortie_get_nom(sortie0),
 		t_entree_get_nom(entree1), t_entree_get_valeur(entree1),
@@ -172,7 +172,7 @@ int main(void)
 	printf("Sortie %d = %d\n", t_sortie_get_id(sortie0), t_sortie_get_valeur(sortie0));
 	printf("Sortie %d = %d\n", t_sortie_get_id(sortie1), t_sortie_get_valeur(sortie1));
 
-	//libérer les 4 allocations
+	//libÃ©rer les 4 allocations
 	
 	//t_entree_destroy(entree0);
 	//t_entree_destroy(entree1);
@@ -182,13 +182,13 @@ int main(void)
 
 	/***************************************************/
 
-	//déclaration des variables
-	int signal[3];		//les 3 valeurs pour les 3 entrées
+	//dÃ©claration des variables
+	int signal[3];		//les 3 valeurs pour les 3 entrÃ©es
 	t_circuit* circuit;   //le circuit complet
-	circuit = t_circuit_init();   //Création du circuit
+	circuit = t_circuit_init();   //CrÃ©ation du circuit
 	construire_circuit(circuit);
 
-	//Vérification de la validité du circuit
+	//VÃ©rification de la validitÃ© du circuit
 	if (t_circuit_est_valide(circuit)) {
 		printf("Circuit valide!\n");
 	}
@@ -196,7 +196,7 @@ int main(void)
 		printf("Circuit invalide!\n");
 	}
 
-	//On définit un signal de 3 bits (111)
+	//On dÃ©finit un signal de 3 bits (111)
 	signal[0] = 1;
 	signal[1] = 1;
 	signal[2] = 1;
@@ -214,7 +214,9 @@ int main(void)
 	char* nom_fich = "test.txt";
 	circuit_IO_sauvegarder(nom_fich, circuit);
 
-	//TEST créer circuit
+
+	/*
+	//TEST crÃ©er circuit
 	t_circuit* circuit2 = t_circuit_init();
 	circuit_IO_charger(nom_fich, circuit2);
 
@@ -225,6 +227,7 @@ int main(void)
 	t_circuit_destroy(circuit);
 	t_circuit_destroy(circuit2);
 	//system("pause");
+
 
 	return EXIT_SUCCESS;
 }
