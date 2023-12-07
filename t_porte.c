@@ -35,7 +35,7 @@ t_porte* t_porte_init(int id, e_types_portes type, char* nom)
 
 	//Assigner les valeurs des paramètres
 	nouvelle_porte->id = id;
-	nouvelle_porte->nom = nom;
+	nouvelle_porte->nom = _strdup(nom);
 	nouvelle_porte->type = type;
 
 	//Crées la/les entrées
@@ -56,6 +56,7 @@ void t_porte_destroy(t_porte* porte)
 	t_pin_sortie_destroy(porte->sortie);
 
 	//Libérer la porte elle-même
+	free(porte->nom);
 	free(porte);
 }
 
@@ -189,14 +190,5 @@ t_pin_sortie* t_porte_get_pin_sortie(const t_porte* porte)
 /********************************************************************/
 void t_porte_serialiser(const t_porte* porte, char* resultat)
 {
-	int position_texte = 0;
-
-	//Mettre ID de l'entrée en premier
-	position_texte += sprintf(resultat, "%d ", porte->id);
-
-	//Mettre le chiffre du type de l'entrée en premier
-	position_texte += sprintf(resultat + position_texte, "%d ", porte->type);
-
-	//Ajouter nom de l'entrée
-	position_texte += sprintf(resultat + position_texte, "%s\n", porte->nom);
+	sprintf(resultat, "%d %d %s\n", t_porte_get_id(porte), t_porte_get_type(porte), t_porte_get_nom(porte));
 }

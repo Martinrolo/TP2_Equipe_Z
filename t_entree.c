@@ -14,7 +14,7 @@ t_entree* t_entree_init(int id, char* nom)
 	entree = (t_entree*)malloc(sizeof(t_entree));
 
     entree->id = id;
-	entree->nom = nom;
+	entree->nom = _strdup(nom);
 	entree->pin = t_pin_sortie_init();
 
 	return entree;
@@ -32,6 +32,10 @@ void t_entree_destroy(t_entree* entree)
 /********************************************************************/
 t_pin_sortie* t_entree_get_pin(t_entree* entree)
 {
+	if (entree == NULL) {
+		// Handle the case where entree is NULL
+		return NULL;
+	}
 	return entree->pin;
 }
 
@@ -75,11 +79,5 @@ char* t_entree_get_nom(const t_entree* entree)
 /********************************************************************/
 void t_entree_serialiser(const t_entree* entree, char* resultat)
 {
-	int position_texte = 0;
-
-	//Mettre ID de l'entrée en premier
-	position_texte += sprintf(resultat, "%d ", entree->id);
-
-	//Ajouter nom de l'entrée
-	position_texte += sprintf(resultat + position_texte, "%s\n", entree->nom);
+	sprintf(resultat, "%d %s\n", t_entree_get_id(entree), t_entree_get_nom(entree));
 }

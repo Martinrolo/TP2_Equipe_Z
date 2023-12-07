@@ -12,7 +12,7 @@ t_sortie* t_sortie_init(int id, char* nom)
 	t_sortie* sortie = (t_sortie*)malloc(sizeof(t_sortie));
 
 	sortie->id = id;
-	sortie->nom = nom;
+	sortie->nom = _strdup(nom);
 	sortie->pin = t_pin_entree_init();
 
 	return sortie;
@@ -78,12 +78,6 @@ char* t_sortie_get_nom(const t_sortie* sortie)
 /***************************************************************************/
 void t_sortie_serialiser(const t_sortie* sortie, char* resultat)
 {
-	int position_texte = 0;
-
-	//Mettre ID de la sortie en premier
-	position_texte += sprintf(resultat, "%d ", sortie->id);
-
-	//Ajouter nom de la sortie
-	position_texte += sprintf(resultat + position_texte, "%s\n", sortie->nom);
+	sprintf(resultat, "%d %s\n", t_sortie_get_id(sortie), t_sortie_get_nom(sortie));
 }
 
