@@ -34,6 +34,7 @@ static void ecrire_entrees(FILE* fichier, int nb_entrees, t_circuit* circuit)
 	{
 		t_entree_serialiser(t_circuit_get_entree(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
+		printf("%s", tampon);
 	}
 }
 
@@ -47,6 +48,7 @@ static void ecrire_sorties(FILE* fichier, int nb_sorties, t_circuit* circuit)
 	{
 		t_sortie_serialiser(t_circuit_get_sortie(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
+		printf("%s", tampon);
 	}
 }
 
@@ -60,6 +62,7 @@ static void ecrire_portes(FILE* fichier, int nb_portes, t_circuit* circuit)
 	{
 		t_porte_serialiser(t_circuit_get_porte(circuit, i), tampon);
 		fprintf(fichier, "%s", tampon);
+		printf("%s", tampon);
 	}
 }
 
@@ -82,11 +85,11 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 			if (strcmp(t_pin_entree_get_lien(entree_porte), "") == 0)
 				fprintf(fichier, "%s ", "XX");
 
+
 			//Sinon, on affiche le nom de la liaison
 			else
 			{
 				fprintf(fichier, "%s ", t_pin_entree_get_lien(entree_porte));
-				printf(t_pin_entree_get_lien(entree_porte));
 			}
 		}
 		//Saut de ligne
@@ -124,18 +127,26 @@ void circuit_IO_sauvegarder(const char* nom_fichier, const t_circuit* circuit)
 
 	//afficher chaque nombre de composant
 	fprintf(fsortie, "%d %d %d\n", nb_entrees, nb_sorties, nb_portes);
+	
+	//AFFICHER dans la console les composants
+	printf("\nComposantes du circuit:\n");
+	printf("%d entrees, %d sorties, %d portes\n\n", nb_entrees, nb_sorties, nb_portes);
 
 	//AJOUTER DES PRINTF À CHAQUE AJOUT DANS LE FICHIER
 	//Écrire les entrées
+	printf("Les entrees:\n");
 	ecrire_entrees(fsortie, nb_entrees, circuit);
 
 	//Écrire les sorties
+	printf("Les sorties:\n");
 	ecrire_sorties(fsortie, nb_sorties, circuit);
 
 	//Écrire les portes
+	printf("Les portes:\n");
 	ecrire_portes(fsortie, nb_portes, circuit);
 
 	//Écrire les liens
+	printf("\nLes liens:\n");
 	ecrire_liens(fsortie, circuit);
 
 	fclose(fsortie);
@@ -211,19 +222,18 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 
 		//Tableaux de caractères contenant les noms de composants
 		char nom[NB_CHAR_COMPOSANT];
+		//créer des dupliqués du tableau (pour éviter les problèmes de corruption de mémoire)
 		char* nom_composant = _strdup(nom);
 		char* nom_liaison = _strdup(nom);
 
 		//Lire nom de l'objet-destination
 		fscanf(fichier, "%s", nom_composant);
-		printf("%c", nom_composant[0]);
-		printf("%c", nom_composant[1]);
 
 		//Si l'objet est une porte
 		if (nom_composant[0] == 'P')
 		{
 			//Le 2e caractère équivaut à la position de la porte
-			porte_position = (int)nom_composant[1] - CONVERT_ASCII;
+			porte_position = nom_composant[1] - CONVERT_ASCII;
 
 			//On va chercher la porte et son nombre d'entrées
 			porte = t_circuit_get_porte(circuit, porte_position);
