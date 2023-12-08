@@ -1,32 +1,54 @@
 //
 #define _CRT_SECURE_NO_WARNINGS
 #include "t_circuit.h"
+#include "partie_bonus.h"
 #include <math.h>
 
+
+/**********************************************************************/
 int** t_circuit_tdv(const t_circuit* le_circuit)
 {
 	int nb_entrees = t_circuit_get_nb_entrees(le_circuit);
 	int nb_sorties = t_circuit_get_nb_sorties(le_circuit);
 	int nb_colonnes = nb_entrees + nb_sorties;
 	int nb_lignes = pow(2, nb_entrees);
+    int signal[MAX_ENTREES];
 
+    //Créer la matrice
+    int** matrice = (int**)malloc(nb_lignes * sizeof(int*));
+    for (int i = 0; i < nb_lignes; i++)
+    {
+        matrice[i] = (int*)malloc(nb_colonnes * sizeof(int));
+    }
 
-	int signal[MAX_ENTREES];
-	for (int i = 0; i < nb_entrees; i++)
+    //Mettre les valeur de toutes les combinaisons d'entrées
+	for (int i = 0; i < nb_lignes; i++)
 	{
+        //Traduire la ligne en binaire
+        int* bits_entrees = (int*)malloc(nb_entrees * sizeof(int*));
+        codage_dec2bin(i, bits_entrees, le_circuit);
 
+        //mettre les bits dans le tableau
+        for (int j = 0; j < nb_entrees; j++)
+        {
+            matrice[i][j] = bits_entrees[j];
+        }
 	}
 
+    //Calculer les sorties
 
+    
+
+    return matrice;
 }
 
-int codage_dec2bin(int nombre, int resultat[])
+int codage_dec2bin(int nombre, int resultat[], const t_circuit* le_circuit)
 {
     int i, bit;
     int nb_bits = 0;
 
     //Pour déterminer si la case du tableau contient un 1 ou un 0
-    for (i = 0; i < CODAGE_NB_BITS; i++) {
+    for (i = 0; i < t_circuit_get_nb_entrees(le_circuit); i++) {
         bit = nombre % 2;
         resultat[i] = bit;
         //Pour trouver le nombre de bits utilisés pour écrire la valeur en binaire
@@ -37,6 +59,24 @@ int codage_dec2bin(int nombre, int resultat[])
         nombre /= 2;
     }
 
-    inverser_tab_bits(resultat, CODAGE_NB_BITS);
+    inverser_tab_bits(resultat, t_circuit_get_nb_entrees(le_circuit), le_circuit);
     return nb_bits;
+}
+
+int inverser_tab_bits(int tab_bits[], int nb_bits, const t_circuit* le_circuit)
+{
+    int i;
+    int temp;
+
+    if (nb_bits > t_circuit_get_nb_entrees(le_circuit))
+        return 0;
+
+    for (i = 0; i < nb_bits / 2; i++)
+    {
+        temp = tab_bits[i];
+        tab_bits[i] = tab_bits[nb_bits - 1 - i];
+        tab_bits[nb_bits - 1 - i] = temp;
+    }
+
+    return 1;
 }

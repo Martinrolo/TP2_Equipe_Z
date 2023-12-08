@@ -12,6 +12,7 @@ Programme qui teste l'utilisation des librairies de circuits logique "t_entree"
 #include "t_circuit.h"
 #include "t_porte.h"
 #include "circuit_IO.h"
+#include "partie_bonus.h"
 
 #define MANUEL	1	//Option de création de circuit manuelle
 #define FICHIER	2	//Option de création de circuit avec fichier
@@ -61,6 +62,30 @@ int main(void)
 		i;
 	t_circuit* circuit;   //le circuit complet
 	circuit = t_circuit_init();   //Init le circuit SANS le construire
+
+
+
+
+
+	//TEST DE LA PARTIE BONUS
+	construire_circuit(circuit);
+	int** matrice;
+	matrice = t_circuit_tdv(circuit);
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			printf("%d ", matrice[i][j]);
+		}
+		printf("\n");
+	}
+
+
+
+
+
+
 
 	//Choisir mode de création du circuit
 	int option;
