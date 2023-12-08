@@ -107,23 +107,21 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 		t_sortie* sortie = t_circuit_get_sortie(circuit, i);
 
 		//Écrire nom sortie
-		fprintf(fichier, "%s ", t_sortie_get_nom(sortie));
 		printf("Sortie %s <- ", t_sortie_get_nom(sortie));
 
 		//Écrire nom liaison de la sortie
 		if (strcmp(t_pin_entree_get_lien(t_sortie_get_pin(sortie)), "") == 0)
 		{
-			fprintf(fichier, "%s ", "XX");
 			printf("%s", "VIDE");
 		}
 		else
 		{
-			fprintf(fichier, "%s ", t_pin_entree_get_lien(t_sortie_get_pin(sortie)));
+			fprintf(fichier, "%s ", t_sortie_get_nom(sortie));
+			fprintf(fichier, "%s\n", t_pin_entree_get_lien(t_sortie_get_pin(sortie)));
 			printf("%s", t_pin_entree_get_lien(t_sortie_get_pin(sortie)));
 		}
 
 		//Saut de ligne
-		fprintf(fichier, "%c", '\n');
 		printf("\n");
 	}
 }
