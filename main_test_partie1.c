@@ -130,8 +130,8 @@ int main(void)
 
 		//Afficher les composants qui ne sont PAS reliés
 		int nb_entrees = t_circuit_get_nb_entrees(circuit);
-		int nb_sorties = t_circuit_get_nb_entrees(circuit);
-		int nb_portes = t_circuit_get_nb_entrees(circuit);
+		int nb_sorties = t_circuit_get_nb_sorties(circuit);
+		int nb_portes = t_circuit_get_nb_portes(circuit);
 
 		for (int i = 0; i < nb_entrees; i++)
 		{
@@ -156,8 +156,6 @@ int main(void)
 			if (t_porte_est_reliee(porte) == 0)
 				printf("La porte %s n'est pas reliee!\n", t_porte_get_nom(porte));
 		}
-
-
 
 
 		//Vérification de la validité du circuit
