@@ -13,6 +13,9 @@ Programme qui teste l'utilisation des librairies de circuits logique "t_entree"
 #include "t_porte.h"
 #include "circuit_IO.h"
 
+#define MANUEL	1	//Option de création de circuit manuelle
+#define FICHIER	2	//Option de création de circuit avec fichier
+
 
 void construire_circuit(t_circuit* circuit)
 {  //variables locales pour les composantes du circuit
@@ -57,8 +60,7 @@ int main(void)
 	int signal[MAX_ENTREES], 	 //les valeurs (0/1) pour les entrées du circuit
 		i;
 	t_circuit* circuit;   //le circuit complet
-	circuit = t_circuit_init();   //Création du circuit
-	construire_circuit(circuit);
+	circuit = t_circuit_init();   //Init le circuit SANS le construire
 
 	//Choisir mode de création du circuit
 	int option;
@@ -69,41 +71,130 @@ int main(void)
 	printf("2 - a partir d'un fichier\n");
 	do {
 		scanf("%d", &option);
-		if (erreur = (option != 1 && option != 2))
+		if (erreur = (option != MANUEL && option != FICHIER))
 			printf("L'option n'est pas valide! Reessayez: ");
 	} while (erreur);
 	
 
 	//Si l'option est 1,
+	if (option == MANUEL)
+	{
+		construire_circuit(circuit);	//On construit au préalable un exemple de circuit
 
+		//Vérification de la validité du circuit
+		if (t_circuit_est_valide(circuit)) {
+			printf("Circuit valide!\n");
+		}
+		else {
+			printf("Circuit invalide!\n");
+		}
 
-	//Vérification de la validité du circuit
-	if (t_circuit_est_valide(circuit)) {
-		printf("Circuit valide!\n");
+		//On définit un signal de 3 bits (eg. 111)
+		for (i = 0; i < t_circuit_get_nb_entrees(circuit); i++) {
+			printf("Quel est la valeur du signal de l'entree %d (0 ou 1) ? ", i);
+			scanf("%d", &signal[i]);		//assignation du signal d'entrée pour l'entrée #i
+		}
+		t_circuit_reset(circuit);
+		t_circuit_appliquer_signal(circuit, signal, t_circuit_get_nb_entrees(circuit));
+
+		if (t_circuit_propager_signal(circuit)) {
+			printf("Signal propage avec succes.\n");
+
+			for (i = 0; i < t_circuit_get_nb_sorties(circuit); i++)
+				printf("Sortie %d: %d\n", i, t_sortie_get_valeur(t_circuit_get_sortie(circuit, i)));
+		}
+		else  printf("Erreur lors de la propagation du signal.\n");
+
+		//SAUVEGARDER le circuit
+		char* nom_fich[10];
+
+		printf("Choisissez un nom de fichier ou vous voulez sauvegarder le circuit: ");
+		scanf("%s", &nom_fich);
+
+		circuit_IO_sauvegarder(nom_fich, circuit);
+		printf("\nLe fichier [%s] a bien ete cree\n", nom_fich);
+
+		t_circuit_destroy(circuit);
 	}
-	else {
-		printf("Circuit invalide!\n");
+
+	//Construire circuit avec un fichier
+	if (option == FICHIER)
+	{
+		//Demander nom de fichier et vérifier s'il existe
+		char nom_fichier[15];
+		printf("Entrez le nom du fichier-texte source a lire: ");
+		scanf("%s", nom_fichier);
+
+		//Charger le circuit
+		circuit_IO_charger(nom_fichier, circuit);
+
+		//Afficher les composants qui ne sont PAS reliés
+		int nb_entrees = t_circuit_get_nb_entrees(circuit);
+		int nb_sorties = t_circuit_get_nb_sorties(circuit);
+		int nb_portes = t_circuit_get_nb_portes(circuit);
+
+		for (int i = 0; i < nb_entrees; i++)
+		{
+			t_entree* entree = t_circuit_get_entree(circuit, i);
+
+			if (t_entree_est_reliee(entree) == 0)
+				printf("L'entree %s n'est pas reliee!\n", t_entree_get_nom(entree));
+		}
+
+		for (int i = 0; i < nb_sorties; i++)
+		{
+			t_sortie* sortie = t_circuit_get_sortie(circuit, i);
+
+			if (t_sortie_est_reliee(sortie) == 0)
+				printf("La sortie %s n'est pas reliee!\n", t_sortie_get_nom(sortie));
+		}
+
+		for (int i = 0; i < nb_portes; i++)
+		{
+			t_porte* porte = t_circuit_get_porte(circuit, i);
+
+			if (t_porte_est_reliee(porte) == 0)
+				printf("La porte %s n'est pas reliee!\n", t_porte_get_nom(porte));
+		}
+
+
+		//Vérification de la validité du circuit
+		if (t_circuit_est_valide(circuit)) {
+			printf("Circuit valide!\n");
+		}
+		else {
+			printf("Circuit invalide!\n");
+		}
+
+		//On définit un signal de 3 bits (eg. 111)
+		for (i = 0; i < t_circuit_get_nb_entrees(circuit); i++) {
+			printf("Quel est la valeur du signal de l'entree %d (0 ou 1) ? ", i);
+			scanf("%d", &signal[i]);		//assignation du signal d'entrée pour l'entrée #i
+		}
+		t_circuit_reset(circuit);
+		t_circuit_appliquer_signal(circuit, signal, t_circuit_get_nb_entrees(circuit));
+
+		if (t_circuit_propager_signal(circuit)) {
+			printf("Signal propage avec succes.\n");
+
+			for (i = 0; i < t_circuit_get_nb_sorties(circuit); i++)
+				printf("Sortie %d: %d\n", i, t_sortie_get_valeur(t_circuit_get_sortie(circuit, i)));
+		}
+		else  printf("Erreur lors de la propagation du signal.\n");
+
+		//SAUVEGARDER le circuit
+		char* nom_fich[10];
+
+		printf("Choisissez un nom de fichier ou vous voulez sauvegarder le circuit: ");
+		scanf("%s", &nom_fich);
+
+		circuit_IO_sauvegarder(nom_fich, circuit);
+		printf("\nLe fichier [%s] a bien ete cree\n", nom_fich);
+
+		t_circuit_destroy(circuit);
 	}
 
-	//On définit un signal de 3 bits (eg. 111)
-	for (i = 0; i < t_circuit_get_nb_entrees(circuit); i++) {
-		printf("Quel est la valeur du signal de l'entree %d (0 ou 1) ? ", i);
-		scanf("%d", &signal[i]);		//assignation du signal d'entrée pour l'entrée #i
-	}
-	t_circuit_reset(circuit);
-	t_circuit_appliquer_signal(circuit, signal, t_circuit_get_nb_entrees(circuit));
-
-	if (t_circuit_propager_signal(circuit)) {
-		printf("Signal propage avec succes.\n");
-
-		for (i = 0; i < t_circuit_get_nb_sorties(circuit); i++)
-			printf("Sortie %d: %d\n", i, t_sortie_get_valeur(t_circuit_get_sortie(circuit, i)));
-	}
-	else  printf("Erreur lors de la propagation du signal.\n");
-
-	circuit_IO_sauvegarder("TEST.txt", circuit);
-
-	t_circuit_destroy(circuit);
+	
 	system("pause");
 
 	return EXIT_SUCCESS;
