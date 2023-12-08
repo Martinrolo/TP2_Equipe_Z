@@ -75,6 +75,7 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 
 		//Écrire nom porte
 		fprintf(fichier, "%s ", t_porte_get_nom(porte));
+		printf("Porte %s <- ", t_porte_get_nom(porte));
 
 		//Écrire nom(s) de(s) liaison(s)
 		for (int j = 0; j < t_porte_get_nb_entrees(porte); j++)
@@ -83,17 +84,21 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 
 			//Si le nom de la liaison est vide:
 			if (strcmp(t_pin_entree_get_lien(entree_porte), "") == 0)
+			{
 				fprintf(fichier, "%s ", "XX");
-
+				printf("%s ", "VIDE");
+			}
 
 			//Sinon, on affiche le nom de la liaison
 			else
 			{
 				fprintf(fichier, "%s ", t_pin_entree_get_lien(entree_porte));
+				printf("%s ", t_pin_entree_get_lien(entree_porte));
 			}
 		}
 		//Saut de ligne
 		fprintf(fichier, "%c", '\n');
+		printf("\n");
 	}
 
 	//Écrire nom sorties
@@ -103,12 +108,23 @@ static void ecrire_liens(FILE* fichier, t_circuit* circuit)
 
 		//Écrire nom sortie
 		fprintf(fichier, "%s ", t_sortie_get_nom(sortie));
+		printf("Sortie %s <- ", t_sortie_get_nom(sortie));
 
 		//Écrire nom liaison de la sortie
-		fprintf(fichier, "%s ", t_pin_entree_get_lien(t_sortie_get_pin(sortie)));
+		if (strcmp(t_pin_entree_get_lien(t_sortie_get_pin(sortie)), "") == 0)
+		{
+			fprintf(fichier, "%s ", "XX");
+			printf("%s", "VIDE");
+		}
+		else
+		{
+			fprintf(fichier, "%s ", t_pin_entree_get_lien(t_sortie_get_pin(sortie)));
+			printf("%s", t_pin_entree_get_lien(t_sortie_get_pin(sortie)));
+		}
 
 		//Saut de ligne
 		fprintf(fichier, "%c", '\n');
+		printf("\n");
 	}
 }
 
@@ -260,14 +276,14 @@ static void lire_liens(FILE* fichier, t_circuit* circuit)
 				}
 
 				//Sinon, on va chercher la porte source et son pin de sortie
-				else
+				else if (nom_liaison[0] == 'P')
 				{
 					//Chercher la position de la porte et la trouver dans le circuit
 					liaison_position = nom_liaison[1] - CONVERT_ASCII;
 					porte_source = t_circuit_get_porte(circuit, liaison_position);
 
 					//Chercher le pin de sortie de l'entrée source selon la position
-					t_pin_sortie* source = t_porte_get_pin_sortie(porte);
+					t_pin_sortie* source = t_porte_get_pin_sortie(porte_source);
 
 					//Faire la liaison
 					t_porte_relier(porte, j, nom_liaison, source);
