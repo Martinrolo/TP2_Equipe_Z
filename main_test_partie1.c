@@ -203,19 +203,30 @@ int main(void)
 		}
 	}
 
-
-	//TEST DE LA PARTIE BONUS
+	//PARTIE BONUS
 	int** matrice;
 	matrice = t_circuit_tdv(circuit);
 
-	//Affichier la matrice
 	printf("Table de verite du circuit:\n");
+	int nb_entrees = t_circuit_get_nb_entrees(circuit);
+	int nb_sorties = t_circuit_get_nb_sorties(circuit);
 
-	for (int i = 0; i < pow(2, circuit->nb_entrees); i++)
+	//Afficher les noms de composants
+	for (int i = 0; i < nb_entrees + nb_sorties; i++)
 	{
-		for (int j = 0; j < circuit->nb_entrees + circuit->nb_sorties; j++)
+		if (i < nb_entrees)
+			printf("%s ", t_entree_get_nom(t_circuit_get_entree(circuit, i)));
+		else
+			printf("%s ", t_sortie_get_nom(t_circuit_get_sortie(circuit, i - nb_entrees)));
+	}
+	printf("\n");
+
+	//Afficher la table
+	for (int i = 0; i < pow(2, nb_entrees); i++)
+	{
+		for (int j = 0; j < nb_entrees + nb_sorties; j++)
 		{
-			printf("%d ", matrice[i][j]);
+			printf("%d  ", matrice[i][j]);
 		}
 		printf("\n");
 	}
