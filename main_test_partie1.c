@@ -286,7 +286,7 @@ int main(void)
 	int** matrice;
 	matrice = t_circuit_tdv(circuit);
 
-	printf("Table de verite du circuit:\n");
+	printf("Table de verite:\n");
 	int nb_entrees = t_circuit_get_nb_entrees(circuit);
 	int nb_sorties = t_circuit_get_nb_sorties(circuit);
 
@@ -312,7 +312,10 @@ int main(void)
 
 	printf("\n");
 
+	//Supprimer la matrice et le circuit
+	t_circuit_tdv_destroy(circuit, matrice);
 	t_circuit_destroy(circuit);
+
 	system("pause");
 
 	return EXIT_SUCCESS;

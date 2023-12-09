@@ -1,4 +1,4 @@
-/*definitions pour la librairie de fonctions FILESLIB.CPP
+/*definitions pour la librairie de fonctions FILESLIB.C
 Description: Contient des fonctions afin de créer et manipuler une file de portes
 	Auteur: Martin Rolo Dussault, Maxim Dmitriev, Antoine St-Amour
 	*/

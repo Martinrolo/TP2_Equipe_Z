@@ -20,4 +20,14 @@ Paramètres modifié: N/A.
 */
 int** t_circuit_tdv(const t_circuit* le_circuit);
 
+/*
+Fonction: t_circuit_tdv_destroy
+Description: Libère la mémoire allouée dynamiquement pour la matrice de table de vérité
+
+Paramètres: Le circuit et sa matrice de table de vérité
+Retour: Aucun
+Paramètres modifié: N/A.
+*/
+void t_circuit_tdv_destroy(t_circuit* circuit, int** matrice);
+
 #endif
