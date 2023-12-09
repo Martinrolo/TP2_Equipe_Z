@@ -22,22 +22,32 @@ int** t_circuit_tdv(const t_circuit* le_circuit)
     }
 
     //Mettre les valeur de toutes les combinaisons d'entrées
+    t_circuit_reset(le_circuit);
+
 	for (int i = 0; i < nb_lignes; i++)
 	{
         //Traduire la ligne en binaire
         int* bits_entrees = (int*)malloc(nb_entrees * sizeof(int*));
         codage_dec2bin(i, bits_entrees, le_circuit);
 
-        //mettre les bits dans le tableau
+        //mettre les bits des entrées dans le tableau
         for (int j = 0; j < nb_entrees; j++)
         {
             matrice[i][j] = bits_entrees[j];
         }
+
+        //quand tous les bits d'une entrée sont appliquées, on peut appliquer 
+        //le signal et calculer les sorties
+        t_circuit_appliquer_signal(le_circuit, matrice[i], t_circuit_get_nb_entrees(le_circuit));
+        t_circuit_propager_signal(le_circuit);
+
+        //écrire les valeurs des sorties dans la matrice
+        for (int k = 0; k < nb_sorties; k++)
+        {
+            //chaque bit de sortie est à la position nb_entrees+k dans la matrice
+            matrice[i][nb_entrees + k] = le_circuit->sorties[k]->pin->valeur;
+        }
 	}
-
-    //Calculer les sorties
-
-    
 
     return matrice;
 }
