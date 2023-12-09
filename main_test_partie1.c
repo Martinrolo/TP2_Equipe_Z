@@ -1,10 +1,10 @@
-/*
-TESTER LES ENTREES ET LES SORTIES
-Auteur: Eric Thé, 13-11-2023
-
-Programme qui teste l'utilisation des librairies de circuits logique "t_entree"
-(avec "t_pin_sortie") et "t_sortie".  Plusieurs tests unitaires sont faits avec "assert()"
+/*PROGRAMME PRINCIPAL TP2: Les circuits combinatoires
+Decription: Permet de créer des circuits contenant des entrées, sorties et portes logiques
+	Dans ce programme principal, on demande à l'utilisateur comment il désire créer son circuit
+	(soit manuellement ou bien par fichier
+Auteurs: Martin Rolo Dussault, Maxim Dmitriev, Antoine St-Amour
 */
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <assert.h>
 #include "t_entree.h"
@@ -15,12 +15,13 @@ Programme qui teste l'utilisation des librairies de circuits logique "t_entree"
 #include "partie_bonus.h"
 #include <math.h>
 
-#define FICHIER		1	//Option de création de circuit avec fichier
-#define MANUEL		2	//Option de création de circuit manuelle (exemple du prof)
-#define MANUEL_2	3	//Option de création de circuit manuelle (notre circuit personnel)
+#define FICHIER				1	//Option de création de circuit avec fichier
+#define MANUEL				2	//Option de création de circuit manuelle (exemple du prof)
+#define MANUEL_PERSONNEL	3	//Option de création de circuit manuelle (notre circuit personnel)
 
-
-void construire_circuit(t_circuit* circuit)
+//Fonction construire_circuit
+//	Descripption: va construire le circuit d'exemple donné par le professeur
+static void construire_circuit(t_circuit* circuit)
 {  //variables locales pour les composantes du circuit
 	t_porte* porte_ou;	//les 4 portes
 	t_porte* porte_et;
@@ -56,6 +57,47 @@ void construire_circuit(t_circuit* circuit)
 	t_sortie_relier(sortie1, t_porte_get_nom(porte_xor), t_porte_get_pin_sortie(porte_xor));
 }
 
+//Fonction construire_circuit_personnel
+//	Descripption: va construire le circuit que nous avons conçu
+/*****************************************************************************************/
+static void construire_circuit_personnel(circuit)
+{
+	t_porte* porte_ou;	//les 3 portes
+	t_porte* porte_et;
+	t_porte* porte_not;
+	t_entree* entree0;	//les 3 entrées
+	t_entree* entree1;
+	t_entree* entree2;
+	t_sortie* sortie0;	//les 3 sorties
+	t_sortie* sortie1;
+	t_sortie* sortie2;
+
+	//Ajout des entrées
+	entree0 = t_circuit_ajouter_entree(circuit, 0, "E0");
+	entree1 = t_circuit_ajouter_entree(circuit, 1, "E1");
+	entree2 = t_circuit_ajouter_entree(circuit, 2, "E2");
+	//Ajout des sorties
+	sortie0 = t_circuit_ajouter_sortie(circuit, 0, "S0");
+	sortie1 = t_circuit_ajouter_sortie(circuit, 1, "S1");
+	sortie2 = t_circuit_ajouter_sortie(circuit, 2, "S2");
+	//Ajout des portes
+	porte_ou = t_circuit_ajouter_porte(circuit, PORTE_OU, 0, "P0");
+	porte_et = t_circuit_ajouter_porte(circuit, PORTE_ET, 1, "P1");
+	porte_not = t_circuit_ajouter_porte(circuit, PORTE_NOT, 2, "P2");
+
+	//Ajout des liens
+	t_porte_relier(porte_ou, 0, t_entree_get_nom(entree0), t_entree_get_pin(entree0));
+	t_porte_relier(porte_ou, 1, t_entree_get_nom(entree1), t_entree_get_pin(entree1));
+	t_porte_relier(porte_not, 0, t_entree_get_nom(entree2), t_entree_get_pin(entree2));
+
+	t_porte_relier(porte_et, 0, t_porte_get_nom(porte_ou), t_porte_get_pin_sortie(porte_ou));
+	t_porte_relier(porte_et, 1, t_porte_get_nom(porte_not), t_porte_get_pin_sortie(porte_not));
+
+	t_sortie_relier(sortie0, t_porte_get_nom(porte_et), t_porte_get_pin_sortie(porte_et));
+	t_sortie_relier(sortie1, t_porte_get_nom(porte_et), t_porte_get_pin_sortie(porte_et));
+	t_sortie_relier(sortie2, t_porte_get_nom(porte_et), t_porte_get_pin_sortie(porte_et));
+}
+
 
 /*****************************************************************************************/
 int main(void)
@@ -65,7 +107,7 @@ int main(void)
 	t_circuit* circuit;   //le circuit complet
 	circuit = t_circuit_init();   //Init le circuit SANS le construire
 
-	//Choisir mode de création du circuit
+	//Demander à l'utilisateur le mode de création du circuit
 	int option;
 	int erreur;
 
@@ -76,7 +118,7 @@ int main(void)
 
 	do {
 		scanf("%d", &option);
-		if (erreur = (option != MANUEL && option != FICHIER && option != MANUEL_2))
+		if (erreur = (option != MANUEL && option != FICHIER && option != MANUEL_PERSONNEL))
 			printf("L'option n'est pas valide! Reessayez: ");
 	} while (erreur);
 	
@@ -156,7 +198,6 @@ int main(void)
 			circuit_IO_sauvegarder(nom_fich, circuit);
 			printf("\nLe fichier [%s] a bien ete cree\n", nom_fich);
 
-			//t_circuit_destroy(circuit);
 			break;
 		}
 
@@ -197,7 +238,45 @@ int main(void)
 			circuit_IO_sauvegarder(nom_fich, circuit);
 			printf("\nLe fichier [%s] a bien ete cree\n\n", nom_fich);
 
-			t_circuit_destroy(circuit);
+			break;
+		}
+
+		case MANUEL_PERSONNEL:
+		{
+			construire_circuit_personnel(circuit);	//On construit au préalable un exemple de circuit
+
+			//Vérification de la validité du circuit
+			if (t_circuit_est_valide(circuit)) {
+				printf("Circuit valide!\n");
+			}
+			else {
+				printf("Circuit invalide!\n");
+			}
+
+			//On définit un signal de 3 bits (eg. 111)
+			for (i = 0; i < t_circuit_get_nb_entrees(circuit); i++) {
+				printf("Quel est la valeur du signal de l'entree %d (0 ou 1) ? ", i);
+				scanf("%d", &signal[i]);		//assignation du signal d'entrée pour l'entrée #i
+			}
+			t_circuit_reset(circuit);
+			t_circuit_appliquer_signal(circuit, signal, t_circuit_get_nb_entrees(circuit));
+
+			if (t_circuit_propager_signal(circuit)) {
+				printf("\nSignal propage avec succes.\n");
+
+				for (i = 0; i < t_circuit_get_nb_sorties(circuit); i++)
+					printf("Sortie %d: %d\n", i, t_sortie_get_valeur(t_circuit_get_sortie(circuit, i)));
+			}
+			else  printf("\nErreur lors de la propagation du signal.\n");
+
+			//SAUVEGARDER le circuit
+			char* nom_fich[10];
+
+			printf("\nChoisissez un nom de fichier ou vous voulez sauvegarder le circuit: ");
+			scanf("%s", &nom_fich);
+
+			circuit_IO_sauvegarder(nom_fich, circuit);
+			printf("\nLe fichier [%s] a bien ete cree\n\n", nom_fich);
 
 			break;
 		}
@@ -232,6 +311,8 @@ int main(void)
 	}
 
 	printf("\n");
+
+	t_circuit_destroy(circuit);
 	system("pause");
 
 	return EXIT_SUCCESS;

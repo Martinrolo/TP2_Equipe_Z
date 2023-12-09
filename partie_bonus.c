@@ -12,7 +12,7 @@ int** t_circuit_tdv(const t_circuit* le_circuit)
 	int nb_sorties = t_circuit_get_nb_sorties(le_circuit);
 	int nb_colonnes = nb_entrees + nb_sorties;
 	int nb_lignes = pow(2, nb_entrees);
-    int signal[MAX_ENTREES];
+    int* signal = (int*)malloc(nb_entrees * sizeof(int));
 
     //Créer la matrice
     int** matrice = (int**)malloc(nb_lignes * sizeof(int*));
@@ -22,23 +22,24 @@ int** t_circuit_tdv(const t_circuit* le_circuit)
     }
 
     //Mettre les valeur de toutes les combinaisons d'entrées
-    t_circuit_reset(le_circuit);
-
 	for (int i = 0; i < nb_lignes; i++)
 	{
+        t_circuit_reset(le_circuit);
+
         //Traduire la ligne en binaire
         int* bits_entrees = (int*)malloc(nb_entrees * sizeof(int*));
         codage_dec2bin(i, bits_entrees, le_circuit);
 
-        //mettre les bits des entrées dans le tableau
+        //mettre les bits des entrées dans le tableau + les bits dans le signal
         for (int j = 0; j < nb_entrees; j++)
         {
             matrice[i][j] = bits_entrees[j];
+            signal[j] = bits_entrees[j];
         }
 
         //quand tous les bits d'une entrée sont appliquées, on peut appliquer 
         //le signal et calculer les sorties
-        t_circuit_appliquer_signal(le_circuit, matrice[i], t_circuit_get_nb_entrees(le_circuit));
+        t_circuit_appliquer_signal(le_circuit, signal, t_circuit_get_nb_entrees(le_circuit));
         t_circuit_propager_signal(le_circuit);
 
         //écrire les valeurs des sorties dans la matrice
@@ -52,7 +53,7 @@ int** t_circuit_tdv(const t_circuit* le_circuit)
     return matrice;
 }
 
-int codage_dec2bin(int nombre, int resultat[], const t_circuit* le_circuit)
+static int codage_dec2bin(int nombre, int resultat[], const t_circuit* le_circuit)
 {
     int i, bit;
     int nb_bits = 0;
@@ -73,7 +74,7 @@ int codage_dec2bin(int nombre, int resultat[], const t_circuit* le_circuit)
     return nb_bits;
 }
 
-int inverser_tab_bits(int tab_bits[], int nb_bits, const t_circuit* le_circuit)
+static int inverser_tab_bits(int tab_bits[], int nb_bits, const t_circuit* le_circuit)
 {
     int i;
     int temp;
